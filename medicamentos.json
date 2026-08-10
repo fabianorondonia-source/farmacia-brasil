@@ -1,7 +1,7 @@
 {
   "meta": {
     "projeto": "Farmácia Brasil — Consulta de Balcão",
-    "versao": "1.0",
+    "versao": "2.0",
     "atualizado_em": "2026-08-10",
     "origem_dados": "Base inicial CURADA (conhecimento farmacológico consolidado). Preparada para receber ANVISA (Dados Abertos) e ABCFarma.",
     "aviso": "FERRAMENTA DE APOIO. Não substitui a avaliação do farmacêutico responsável nem a prescrição médica. Antes do uso real no balcão, TODO o conteúdo deve ser validado pelo farmacêutico responsável (RT). Bula completa e oficial: Bulário Eletrônico da ANVISA.",
@@ -10,44 +10,1246 @@
       "Vermelha": "Venda sob prescrição médica (receita simples)",
       "Vermelha (retenção)": "Antibiótico/controle — venda sob prescrição com RETENÇÃO da receita (RDC 20/2011)",
       "Preta/Controlada": "Substância controlada — exige Notificação de Receita (Portaria 344/98)"
-    }
+    },
+    "campos_pendentes": "ean e preco aguardam importação de ANVISA/ABCFarma"
   },
   "medicamentos": [
-    { "id": 1, "principio": "Paracetamol", "marcas": ["Tylenol", "Genérico"], "classe": "Analgésico / Antitérmico", "tarja": "Livre", "generico": true, "indicacoes": ["Dor leve a moderada", "Febre"], "enfermidades": ["dor", "dor de cabeça", "cefaleia", "febre", "dor no corpo"], "posologia": "Adulto: conforme concentração e bula. Dose máx. usual 3–4 g/dia. Seguir orientação do farmacêutico/bula.", "contraindicacoes": ["Doença hepática grave", "Alergia ao paracetamol"], "alertas": ["Cuidado com uso associado a álcool (fígado)", "Somar doses de outros produtos que contenham paracetamol"] },
-    { "id": 2, "principio": "Dipirona sódica", "marcas": ["Novalgina", "Anador", "Genérico"], "classe": "Analgésico / Antitérmico", "tarja": "Livre", "generico": true, "indicacoes": ["Dor", "Febre"], "enfermidades": ["dor", "febre", "dor de cabeça", "cólica"], "posologia": "Adulto: conforme apresentação e bula. Seguir orientação do farmacêutico.", "contraindicacoes": ["Alergia a pirazolonas", "Alterações da medula óssea"], "alertas": ["Raro risco de agranulocitose", "Pode baixar a pressão se administrada rápido por via IV"] },
-    { "id": 3, "principio": "Ibuprofeno", "marcas": ["Advil", "Alivium", "Genérico"], "classe": "Anti-inflamatório não esteroide (AINE)", "tarja": "Livre", "generico": true, "indicacoes": ["Dor", "Inflamação", "Febre"], "enfermidades": ["dor", "inflamação", "febre", "dor muscular", "cólica", "dor de dente"], "posologia": "Adulto: conforme concentração e bula. Tomar após alimentação.", "contraindicacoes": ["Úlcera gástrica ativa", "Alergia a AINEs", "Insuficiência renal grave"], "alertas": ["Evitar em gestantes no 3º trimestre", "Cuidado em hipertensos e cardíacos", "Pode irritar o estômago"] },
-    { "id": 4, "principio": "Ácido acetilsalicílico (AAS)", "marcas": ["Aspirina", "AAS", "Genérico"], "classe": "Analgésico / Antitérmico / Antiagregante plaquetário", "tarja": "Livre", "generico": true, "indicacoes": ["Dor e febre (dose analgésica)", "Antiagregante (dose baixa, sob orientação)"], "enfermidades": ["dor", "febre", "prevenção cardiovascular"], "posologia": "Dose analgésica e dose cardiológica são diferentes — seguir bula/prescrição.", "contraindicacoes": ["Úlcera ativa", "Distúrbios de coagulação", "Alergia a salicilatos"], "alertas": ["NÃO usar em crianças/adolescentes com quadro viral (risco de síndrome de Reye)", "Aumenta risco de sangramento"] },
-    { "id": 5, "principio": "Omeprazol", "marcas": ["Losec", "Genérico"], "classe": "Inibidor de bomba de prótons (IBP)", "tarja": "Livre", "generico": true, "indicacoes": ["Azia", "Refluxo", "Gastrite", "Úlcera (sob orientação)"], "enfermidades": ["azia", "refluxo", "gastrite", "queimação", "má digestão", "úlcera"], "posologia": "Adulto: geralmente 1x/dia em jejum, antes do café. Uso prolongado sob orientação.", "contraindicacoes": ["Alergia ao omeprazol"], "alertas": ["Uso livre é para alívio curto; sintomas persistentes exigem avaliação médica"] },
-    { "id": 6, "principio": "Loratadina", "marcas": ["Claritin", "Genérico"], "classe": "Anti-histamínico (2ª geração)", "tarja": "Livre", "generico": true, "indicacoes": ["Alergia", "Rinite alérgica", "Urticária"], "enfermidades": ["alergia", "rinite", "coriza", "urticária", "coceira", "espirros"], "posologia": "Adulto: 1x/dia. Pouca sonolência.", "contraindicacoes": ["Alergia à loratadina"], "alertas": ["Ajuste em doença hepática"] },
-    { "id": 7, "principio": "Cetirizina", "marcas": ["Zyrtec", "Genérico"], "classe": "Anti-histamínico (2ª geração)", "tarja": "Livre", "generico": true, "indicacoes": ["Alergia", "Rinite", "Urticária"], "enfermidades": ["alergia", "rinite", "coceira", "urticária", "espirros"], "posologia": "Adulto: 1x/dia. Pode causar leve sonolência.", "contraindicacoes": ["Alergia à cetirizina", "Insuficiência renal (ajuste)"], "alertas": ["Cuidado ao dirigir se sentir sonolência"] },
-    { "id": 8, "principio": "Dexclorfeniramina", "marcas": ["Polaramine", "Genérico"], "classe": "Anti-histamínico (1ª geração)", "tarja": "Livre", "generico": true, "indicacoes": ["Alergia", "Coceira", "Urticária"], "enfermidades": ["alergia", "coceira", "urticária", "picada de inseto", "rinite"], "posologia": "Adulto: conforme bula. Causa sonolência.", "contraindicacoes": ["Glaucoma de ângulo fechado", "Retenção urinária"], "alertas": ["Causa sonolência — evitar dirigir", "Evitar com álcool"] },
-    { "id": 9, "principio": "Fexofenadina", "marcas": ["Allegra", "Genérico"], "classe": "Anti-histamínico (2ª geração)", "tarja": "Livre", "generico": true, "indicacoes": ["Rinite alérgica", "Urticária"], "enfermidades": ["alergia", "rinite", "urticária", "coceira"], "posologia": "Adulto: conforme apresentação e bula.", "contraindicacoes": ["Alergia à fexofenadina"], "alertas": ["Não tomar junto com sucos de fruta (reduz absorção)"] },
-    { "id": 10, "principio": "Butilbrometo de escopolamina", "marcas": ["Buscopan", "Genérico"], "classe": "Antiespasmódico", "tarja": "Livre", "generico": true, "indicacoes": ["Cólica abdominal", "Cólica menstrual", "Espasmos"], "enfermidades": ["cólica", "cólica menstrual", "dor abdominal", "espasmo"], "posologia": "Adulto: conforme bula. Versão 'Composto' contém dipirona.", "contraindicacoes": ["Glaucoma", "Obstrução intestinal ou urinária"], "alertas": ["Boca seca é comum"] },
-    { "id": 11, "principio": "Simeticona", "marcas": ["Luftal", "Genérico"], "classe": "Antiflatulento", "tarja": "Livre", "generico": true, "indicacoes": ["Gases", "Distensão abdominal"], "enfermidades": ["gases", "flatulência", "barriga inchada", "empachamento"], "posologia": "Adulto: após refeições e ao deitar, conforme bula.", "contraindicacoes": ["Alergia à simeticona"], "alertas": ["Seguro; sem absorção sistêmica relevante"] },
-    { "id": 12, "principio": "Loperamida", "marcas": ["Imosec", "Genérico"], "classe": "Antidiarreico", "tarja": "Livre", "generico": true, "indicacoes": ["Diarreia aguda sem sinais de gravidade"], "enfermidades": ["diarreia"], "posologia": "Adulto: conforme bula, com limite diário.", "contraindicacoes": ["Diarreia com sangue/febre alta", "Crianças pequenas"], "alertas": ["NÃO usar se houver sangue nas fezes ou febre alta — encaminhar ao médico", "Não substitui reidratação"] },
-    { "id": 13, "principio": "Sais para reidratação oral", "marcas": ["Soro reidratante", "Genérico"], "classe": "Reidratante oral", "tarja": "Livre", "generico": true, "indicacoes": ["Reposição de líquidos na diarreia/vômito"], "enfermidades": ["diarreia", "desidratação", "vômito"], "posologia": "Preparar conforme instrução; oferecer em pequenos goles.", "contraindicacoes": ["Obstrução intestinal"], "alertas": ["Sinais de desidratação grave exigem atendimento imediato"] },
-    { "id": 14, "principio": "Dimenidrinato (+ piridoxina)", "marcas": ["Dramin", "Dramin B6", "Genérico"], "classe": "Antiemético / Anti-vertiginoso", "tarja": "Livre", "generico": true, "indicacoes": ["Enjoo de movimento", "Náusea", "Vômito", "Labirintite (sob orientação)"], "enfermidades": ["enjoo", "náusea", "vômito", "tontura", "labirintite", "cinetose"], "posologia": "Adulto: conforme bula. Causa sonolência.", "contraindicacoes": ["Glaucoma", "Crise asmática"], "alertas": ["Causa sonolência — evitar dirigir"] },
-    { "id": 15, "principio": "Vitamina C (Ácido ascórbico)", "marcas": ["Cebion", "Redoxon", "Genérico"], "classe": "Suplemento vitamínico", "tarja": "Livre", "generico": true, "indicacoes": ["Suplementação de vitamina C"], "enfermidades": ["imunidade", "prevenção", "cansaço"], "posologia": "Conforme apresentação e bula.", "contraindicacoes": ["Cálculo renal de oxalato (doses altas)"], "alertas": ["Evidência limitada para 'curar' gripe/resfriado"] },
-    { "id": 16, "principio": "Cloridrato de ambroxol", "marcas": ["Mucosolvan", "Genérico"], "classe": "Mucolítico / Expectorante", "tarja": "Livre", "generico": true, "indicacoes": ["Tosse com catarro (facilita eliminação)"], "enfermidades": ["tosse", "catarro", "secreção", "bronquite"], "posologia": "Adulto e formas pediátricas — conforme bula.", "contraindicacoes": ["Alergia ao ambroxol"], "alertas": ["Não usar junto com antitussígenos que 'secam' a tosse produtiva"] },
-    { "id": 17, "principio": "Cetoconazol (xampu/tópico)", "marcas": ["Nizoral", "Genérico"], "classe": "Antifúngico tópico", "tarja": "Livre", "generico": true, "indicacoes": ["Caspa", "Dermatite seborreica", "Micoses de pele (uso tópico)"], "enfermidades": ["caspa", "micose", "coceira no couro cabeludo", "frieira", "seborreia"], "posologia": "Uso externo, conforme bula.", "contraindicacoes": ["Alergia ao cetoconazol"], "alertas": ["Apenas apresentações tópicas são de venda livre; comprimido é sob prescrição"] },
-    { "id": 18, "principio": "Nimesulida", "marcas": ["Nisulid", "Genérico"], "classe": "Anti-inflamatório não esteroide (AINE)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Dor", "Inflamação"], "enfermidades": ["dor", "inflamação", "dor de dente", "dor de garganta"], "posologia": "Sob prescrição. Uso curto.", "contraindicacoes": ["Doença hepática", "Úlcera ativa", "Gestação (3º trimestre)"], "alertas": ["Risco hepático — não usar por conta própria"] },
-    { "id": 19, "principio": "Diclofenaco", "marcas": ["Cataflam", "Voltaren", "Genérico"], "classe": "Anti-inflamatório não esteroide (AINE)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Dor", "Inflamação (oral/injetável sob prescrição)"], "enfermidades": ["dor", "inflamação", "dor muscular", "lombalgia"], "posologia": "Oral/injetável sob prescrição. Gel tópico tem venda livre.", "contraindicacoes": ["Úlcera", "Insuficiência renal/cardíaca grave"], "alertas": ["Cuidado cardiovascular e gástrico"] },
-    { "id": 20, "principio": "Amoxicilina", "marcas": ["Amoxil", "Genérico"], "classe": "Antibiótico (penicilina)", "tarja": "Vermelha (retenção)", "generico": true, "indicacoes": ["Infecções bacterianas (garganta, ouvido, urina, etc.)"], "enfermidades": ["infecção", "infecção de garganta", "amigdalite", "sinusite", "infecção urinária"], "posologia": "SOMENTE sob prescrição médica, com retenção de receita.", "contraindicacoes": ["Alergia a penicilinas"], "alertas": ["Não vender sem receita (RDC 20/2011)", "Completar o tratamento prescrito"] },
-    { "id": 21, "principio": "Amoxicilina + Clavulanato", "marcas": ["Clavulin", "Genérico"], "classe": "Antibiótico (penicilina + inibidor de betalactamase)", "tarja": "Vermelha (retenção)", "generico": true, "indicacoes": ["Infecções bacterianas resistentes"], "enfermidades": ["infecção", "sinusite", "infecção urinária", "pneumonia"], "posologia": "SOMENTE sob prescrição, com retenção de receita.", "contraindicacoes": ["Alergia a penicilinas", "Histórico de icterícia por clavulanato"], "alertas": ["Não vender sem receita", "Pode causar diarreia"] },
-    { "id": 22, "principio": "Azitromicina", "marcas": ["Zitromax", "Genérico"], "classe": "Antibiótico (macrolídeo)", "tarja": "Vermelha (retenção)", "generico": true, "indicacoes": ["Infecções respiratórias e outras"], "enfermidades": ["infecção", "infecção de garganta", "pneumonia", "bronquite bacteriana"], "posologia": "SOMENTE sob prescrição, com retenção de receita.", "contraindicacoes": ["Alergia a macrolídeos", "Arritmias graves"], "alertas": ["Não vender sem receita"] },
-    { "id": 23, "principio": "Cefalexina", "marcas": ["Keflex", "Genérico"], "classe": "Antibiótico (cefalosporina)", "tarja": "Vermelha (retenção)", "generico": true, "indicacoes": ["Infecções de pele, urina, garganta"], "enfermidades": ["infecção", "infecção urinária", "infecção de pele"], "posologia": "SOMENTE sob prescrição, com retenção de receita.", "contraindicacoes": ["Alergia a cefalosporinas"], "alertas": ["Não vender sem receita"] },
-    { "id": 24, "principio": "Losartana potássica", "marcas": ["Cozaar", "Genérico"], "classe": "Anti-hipertensivo (bloqueador do receptor de angiotensina)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Hipertensão arterial", "Proteção renal (sob prescrição)"], "enfermidades": ["hipertensão", "pressão alta"], "posologia": "Uso contínuo sob prescrição.", "contraindicacoes": ["Gestação", "Alergia à losartana"], "alertas": ["Não interromper por conta própria", "Monitorar potássio/rim"] },
-    { "id": 25, "principio": "Enalapril", "marcas": ["Renitec", "Genérico"], "classe": "Anti-hipertensivo (IECA)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Hipertensão", "Insuficiência cardíaca"], "enfermidades": ["hipertensão", "pressão alta", "insuficiência cardíaca"], "posologia": "Uso contínuo sob prescrição.", "contraindicacoes": ["Gestação", "Angioedema prévio"], "alertas": ["Pode causar tosse seca", "Não interromper por conta própria"] },
-    { "id": 26, "principio": "Hidroclorotiazida", "marcas": ["Clorana", "Genérico"], "classe": "Diurético tiazídico", "tarja": "Vermelha", "generico": true, "indicacoes": ["Hipertensão", "Edema (sob prescrição)"], "enfermidades": ["hipertensão", "pressão alta", "inchaço"], "posologia": "Uso contínuo sob prescrição, geralmente pela manhã.", "contraindicacoes": ["Anúria", "Alergia a sulfonamidas"], "alertas": ["Monitorar potássio/sódio"] },
-    { "id": 27, "principio": "Metformina", "marcas": ["Glifage", "Genérico"], "classe": "Antidiabético (biguanida)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Diabetes tipo 2"], "enfermidades": ["diabetes", "açúcar alto", "glicemia"], "posologia": "Uso contínuo sob prescrição, junto às refeições.", "contraindicacoes": ["Insuficiência renal grave"], "alertas": ["Pode causar desconforto gastrointestinal", "Suspender antes de exames com contraste (orientação médica)"] },
-    { "id": 28, "principio": "Glibenclamida", "marcas": ["Daonil", "Genérico"], "classe": "Antidiabético (sulfonilureia)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Diabetes tipo 2"], "enfermidades": ["diabetes", "açúcar alto", "glicemia"], "posologia": "Uso contínuo sob prescrição.", "contraindicacoes": ["Diabetes tipo 1", "Insuficiência renal/hepática grave"], "alertas": ["Risco de hipoglicemia — atenção a jejum e álcool"] },
-    { "id": 29, "principio": "Sinvastatina", "marcas": ["Zocor", "Genérico"], "classe": "Hipolipemiante (estatina)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Colesterol alto", "Prevenção cardiovascular"], "enfermidades": ["colesterol", "colesterol alto", "dislipidemia"], "posologia": "Uso contínuo sob prescrição, geralmente à noite.", "contraindicacoes": ["Doença hepática ativa", "Gestação"], "alertas": ["Relatar dor muscular intensa ao médico", "Evitar suco de toranja (grapefruit)"] },
-    { "id": 30, "principio": "Atorvastatina", "marcas": ["Lipitor", "Citalor", "Genérico"], "classe": "Hipolipemiante (estatina)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Colesterol alto", "Prevenção cardiovascular"], "enfermidades": ["colesterol", "colesterol alto", "dislipidemia"], "posologia": "Uso contínuo sob prescrição.", "contraindicacoes": ["Doença hepática ativa", "Gestação"], "alertas": ["Relatar dor muscular ao médico"] },
-    { "id": 31, "principio": "Salbutamol", "marcas": ["Aerolin", "Genérico"], "classe": "Broncodilatador (beta-2 agonista)", "tarja": "Vermelha", "generico": true, "indicacoes": ["Asma", "Broncoespasmo"], "enfermidades": ["asma", "falta de ar", "bronquite", "chiado no peito"], "posologia": "Inalatório sob prescrição, para alívio de crises.", "contraindicacoes": ["Alergia ao salbutamol"], "alertas": ["Uso frequente indica asma mal controlada — encaminhar ao médico", "Pode causar tremor/taquicardia"] },
-    { "id": 32, "principio": "Prednisona", "marcas": ["Meticorten", "Genérico"], "classe": "Corticosteroide", "tarja": "Vermelha", "generico": true, "indicacoes": ["Inflamações", "Alergias graves", "Doenças autoimunes (sob prescrição)"], "enfermidades": ["inflamação", "alergia grave", "asma", "crise alérgica"], "posologia": "Sob prescrição; retirada gradual quando em uso prolongado.", "contraindicacoes": ["Infecção fúngica sistêmica"], "alertas": ["Não interromper abruptamente após uso prolongado", "Pode elevar glicemia e pressão"] },
-    { "id": 33, "principio": "Aciclovir", "marcas": ["Zovirax", "Genérico"], "classe": "Antiviral", "tarja": "Vermelha", "generico": true, "indicacoes": ["Herpes simples", "Herpes-zóster (oral sob prescrição)"], "enfermidades": ["herpes", "herpes labial", "cobreiro", "zóster"], "posologia": "Creme tópico venda livre; comprimido sob prescrição.", "contraindicacoes": ["Alergia ao aciclovir"], "alertas": ["Iniciar cedo aumenta eficácia"] },
-    { "id": 34, "principio": "Sertralina", "marcas": ["Zoloft", "Genérico"], "classe": "Antidepressivo (ISRS)", "tarja": "Vermelha (retenção)", "generico": true, "indicacoes": ["Depressão", "Ansiedade", "Pânico (sob prescrição)"], "enfermidades": ["depressão", "ansiedade", "pânico", "TOC"], "posologia": "Uso contínuo sob prescrição; efeito em algumas semanas.", "contraindicacoes": ["Uso com IMAO"], "alertas": ["Venda com retenção de receita", "Não interromper por conta própria"] },
-    { "id": 35, "principio": "Clonazepam", "marcas": ["Rivotril", "Genérico"], "classe": "Benzodiazepínico (ansiolítico/anticonvulsivante)", "tarja": "Preta/Controlada", "generico": true, "indicacoes": ["Ansiedade", "Convulsões (sob prescrição)"], "enfermidades": ["ansiedade", "insônia", "convulsão", "epilepsia"], "posologia": "SOMENTE com Notificação de Receita (receita azul — B1).", "contraindicacoes": ["Miastenia gravis", "Glaucoma de ângulo fechado", "Dependência"], "alertas": ["Substância controlada — exige Notificação de Receita", "Risco de dependência e sonolência", "Não associar a álcool"] },
-    { "id": 36, "principio": "Escopolamina + Dipirona", "marcas": ["Buscopan Composto", "Genérico"], "classe": "Antiespasmódico + Analgésico", "tarja": "Livre", "generico": true, "indicacoes": ["Cólica com dor"], "enfermidades": ["cólica", "cólica menstrual", "dor abdominal"], "posologia": "Adulto: conforme bula.", "contraindicacoes": ["Glaucoma", "Alergia a pirazolonas", "Obstrução intestinal/urinária"], "alertas": ["Contém dipirona — atenção a alergias"] }
+    {
+      "id": 1,
+      "principio": "Paracetamol",
+      "marcas": [
+        "Tylenol",
+        "Genérico"
+      ],
+      "classe": "Analgésico / Antitérmico",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Dor leve a moderada",
+        "Febre"
+      ],
+      "enfermidades": [
+        "dor",
+        "dor de cabeça",
+        "cefaleia",
+        "febre",
+        "dor no corpo"
+      ],
+      "posologia": "Adulto: conforme concentração e bula. Dose máx. usual 3–4 g/dia. Seguir orientação do farmacêutico/bula.",
+      "contraindicacoes": [
+        "Doença hepática grave",
+        "Alergia ao paracetamol"
+      ],
+      "alertas": [
+        "Cuidado com uso associado a álcool (fígado)",
+        "Somar doses de outros produtos que contenham paracetamol"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "paracetamol",
+      "tipo": "referência"
+    },
+    {
+      "id": 2,
+      "principio": "Dipirona sódica",
+      "marcas": [
+        "Novalgina",
+        "Anador",
+        "Genérico"
+      ],
+      "classe": "Analgésico / Antitérmico",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Dor",
+        "Febre"
+      ],
+      "enfermidades": [
+        "dor",
+        "febre",
+        "dor de cabeça",
+        "cólica"
+      ],
+      "posologia": "Adulto: conforme apresentação e bula. Seguir orientação do farmacêutico.",
+      "contraindicacoes": [
+        "Alergia a pirazolonas",
+        "Alterações da medula óssea"
+      ],
+      "alertas": [
+        "Raro risco de agranulocitose",
+        "Pode baixar a pressão se administrada rápido por via IV"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "dipirona sodica",
+      "tipo": "referência"
+    },
+    {
+      "id": 3,
+      "principio": "Ibuprofeno",
+      "marcas": [
+        "Advil",
+        "Alivium",
+        "Genérico"
+      ],
+      "classe": "Anti-inflamatório não esteroide (AINE)",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Dor",
+        "Inflamação",
+        "Febre"
+      ],
+      "enfermidades": [
+        "dor",
+        "inflamação",
+        "febre",
+        "dor muscular",
+        "cólica",
+        "dor de dente"
+      ],
+      "posologia": "Adulto: conforme concentração e bula. Tomar após alimentação.",
+      "contraindicacoes": [
+        "Úlcera gástrica ativa",
+        "Alergia a AINEs",
+        "Insuficiência renal grave"
+      ],
+      "alertas": [
+        "Evitar em gestantes no 3º trimestre",
+        "Cuidado em hipertensos e cardíacos",
+        "Pode irritar o estômago"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "ibuprofeno",
+      "tipo": "referência"
+    },
+    {
+      "id": 4,
+      "principio": "Ácido acetilsalicílico (AAS)",
+      "marcas": [
+        "Aspirina",
+        "AAS",
+        "Genérico"
+      ],
+      "classe": "Analgésico / Antitérmico / Antiagregante plaquetário",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Dor e febre (dose analgésica)",
+        "Antiagregante (dose baixa, sob orientação)"
+      ],
+      "enfermidades": [
+        "dor",
+        "febre",
+        "prevenção cardiovascular"
+      ],
+      "posologia": "Dose analgésica e dose cardiológica são diferentes — seguir bula/prescrição.",
+      "contraindicacoes": [
+        "Úlcera ativa",
+        "Distúrbios de coagulação",
+        "Alergia a salicilatos"
+      ],
+      "alertas": [
+        "NÃO usar em crianças/adolescentes com quadro viral (risco de síndrome de Reye)",
+        "Aumenta risco de sangramento"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "acido acetilsalicilico aas",
+      "tipo": "referência"
+    },
+    {
+      "id": 5,
+      "principio": "Omeprazol",
+      "marcas": [
+        "Losec",
+        "Genérico"
+      ],
+      "classe": "Inibidor de bomba de prótons (IBP)",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Azia",
+        "Refluxo",
+        "Gastrite",
+        "Úlcera (sob orientação)"
+      ],
+      "enfermidades": [
+        "azia",
+        "refluxo",
+        "gastrite",
+        "queimação",
+        "má digestão",
+        "úlcera"
+      ],
+      "posologia": "Adulto: geralmente 1x/dia em jejum, antes do café. Uso prolongado sob orientação.",
+      "contraindicacoes": [
+        "Alergia ao omeprazol"
+      ],
+      "alertas": [
+        "Uso livre é para alívio curto; sintomas persistentes exigem avaliação médica"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "omeprazol",
+      "tipo": "referência"
+    },
+    {
+      "id": 6,
+      "principio": "Loratadina",
+      "marcas": [
+        "Claritin",
+        "Genérico"
+      ],
+      "classe": "Anti-histamínico (2ª geração)",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Alergia",
+        "Rinite alérgica",
+        "Urticária"
+      ],
+      "enfermidades": [
+        "alergia",
+        "rinite",
+        "coriza",
+        "urticária",
+        "coceira",
+        "espirros"
+      ],
+      "posologia": "Adulto: 1x/dia. Pouca sonolência.",
+      "contraindicacoes": [
+        "Alergia à loratadina"
+      ],
+      "alertas": [
+        "Ajuste em doença hepática"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "loratadina",
+      "tipo": "referência"
+    },
+    {
+      "id": 7,
+      "principio": "Cetirizina",
+      "marcas": [
+        "Zyrtec",
+        "Genérico"
+      ],
+      "classe": "Anti-histamínico (2ª geração)",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Alergia",
+        "Rinite",
+        "Urticária"
+      ],
+      "enfermidades": [
+        "alergia",
+        "rinite",
+        "coceira",
+        "urticária",
+        "espirros"
+      ],
+      "posologia": "Adulto: 1x/dia. Pode causar leve sonolência.",
+      "contraindicacoes": [
+        "Alergia à cetirizina",
+        "Insuficiência renal (ajuste)"
+      ],
+      "alertas": [
+        "Cuidado ao dirigir se sentir sonolência"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "cetirizina",
+      "tipo": "referência"
+    },
+    {
+      "id": 8,
+      "principio": "Dexclorfeniramina",
+      "marcas": [
+        "Polaramine",
+        "Genérico"
+      ],
+      "classe": "Anti-histamínico (1ª geração)",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Alergia",
+        "Coceira",
+        "Urticária"
+      ],
+      "enfermidades": [
+        "alergia",
+        "coceira",
+        "urticária",
+        "picada de inseto",
+        "rinite"
+      ],
+      "posologia": "Adulto: conforme bula. Causa sonolência.",
+      "contraindicacoes": [
+        "Glaucoma de ângulo fechado",
+        "Retenção urinária"
+      ],
+      "alertas": [
+        "Causa sonolência — evitar dirigir",
+        "Evitar com álcool"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "dexclorfeniramina",
+      "tipo": "referência"
+    },
+    {
+      "id": 9,
+      "principio": "Fexofenadina",
+      "marcas": [
+        "Allegra",
+        "Genérico"
+      ],
+      "classe": "Anti-histamínico (2ª geração)",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Rinite alérgica",
+        "Urticária"
+      ],
+      "enfermidades": [
+        "alergia",
+        "rinite",
+        "urticária",
+        "coceira"
+      ],
+      "posologia": "Adulto: conforme apresentação e bula.",
+      "contraindicacoes": [
+        "Alergia à fexofenadina"
+      ],
+      "alertas": [
+        "Não tomar junto com sucos de fruta (reduz absorção)"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "fexofenadina",
+      "tipo": "referência"
+    },
+    {
+      "id": 10,
+      "principio": "Butilbrometo de escopolamina",
+      "marcas": [
+        "Buscopan",
+        "Genérico"
+      ],
+      "classe": "Antiespasmódico",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Cólica abdominal",
+        "Cólica menstrual",
+        "Espasmos"
+      ],
+      "enfermidades": [
+        "cólica",
+        "cólica menstrual",
+        "dor abdominal",
+        "espasmo"
+      ],
+      "posologia": "Adulto: conforme bula. Versão 'Composto' contém dipirona.",
+      "contraindicacoes": [
+        "Glaucoma",
+        "Obstrução intestinal ou urinária"
+      ],
+      "alertas": [
+        "Boca seca é comum"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "butilbrometo de escopolamina",
+      "tipo": "referência"
+    },
+    {
+      "id": 11,
+      "principio": "Simeticona",
+      "marcas": [
+        "Luftal",
+        "Genérico"
+      ],
+      "classe": "Antiflatulento",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Gases",
+        "Distensão abdominal"
+      ],
+      "enfermidades": [
+        "gases",
+        "flatulência",
+        "barriga inchada",
+        "empachamento"
+      ],
+      "posologia": "Adulto: após refeições e ao deitar, conforme bula.",
+      "contraindicacoes": [
+        "Alergia à simeticona"
+      ],
+      "alertas": [
+        "Seguro; sem absorção sistêmica relevante"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "simeticona",
+      "tipo": "referência"
+    },
+    {
+      "id": 12,
+      "principio": "Loperamida",
+      "marcas": [
+        "Imosec",
+        "Genérico"
+      ],
+      "classe": "Antidiarreico",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Diarreia aguda sem sinais de gravidade"
+      ],
+      "enfermidades": [
+        "diarreia"
+      ],
+      "posologia": "Adulto: conforme bula, com limite diário.",
+      "contraindicacoes": [
+        "Diarreia com sangue/febre alta",
+        "Crianças pequenas"
+      ],
+      "alertas": [
+        "NÃO usar se houver sangue nas fezes ou febre alta — encaminhar ao médico",
+        "Não substitui reidratação"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "loperamida",
+      "tipo": "referência"
+    },
+    {
+      "id": 13,
+      "principio": "Sais para reidratação oral",
+      "marcas": [
+        "Soro reidratante",
+        "Genérico"
+      ],
+      "classe": "Reidratante oral",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Reposição de líquidos na diarreia/vômito"
+      ],
+      "enfermidades": [
+        "diarreia",
+        "desidratação",
+        "vômito"
+      ],
+      "posologia": "Preparar conforme instrução; oferecer em pequenos goles.",
+      "contraindicacoes": [
+        "Obstrução intestinal"
+      ],
+      "alertas": [
+        "Sinais de desidratação grave exigem atendimento imediato"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "sais para reidratacao oral",
+      "tipo": "referência"
+    },
+    {
+      "id": 14,
+      "principio": "Dimenidrinato (+ piridoxina)",
+      "marcas": [
+        "Dramin",
+        "Dramin B6",
+        "Genérico"
+      ],
+      "classe": "Antiemético / Anti-vertiginoso",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Enjoo de movimento",
+        "Náusea",
+        "Vômito",
+        "Labirintite (sob orientação)"
+      ],
+      "enfermidades": [
+        "enjoo",
+        "náusea",
+        "vômito",
+        "tontura",
+        "labirintite",
+        "cinetose"
+      ],
+      "posologia": "Adulto: conforme bula. Causa sonolência.",
+      "contraindicacoes": [
+        "Glaucoma",
+        "Crise asmática"
+      ],
+      "alertas": [
+        "Causa sonolência — evitar dirigir"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "dimenidrinato piridoxina",
+      "tipo": "referência"
+    },
+    {
+      "id": 15,
+      "principio": "Vitamina C (Ácido ascórbico)",
+      "marcas": [
+        "Cebion",
+        "Redoxon",
+        "Genérico"
+      ],
+      "classe": "Suplemento vitamínico",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Suplementação de vitamina C"
+      ],
+      "enfermidades": [
+        "imunidade",
+        "prevenção",
+        "cansaço"
+      ],
+      "posologia": "Conforme apresentação e bula.",
+      "contraindicacoes": [
+        "Cálculo renal de oxalato (doses altas)"
+      ],
+      "alertas": [
+        "Evidência limitada para 'curar' gripe/resfriado"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "vitamina c acido ascorbico",
+      "tipo": "referência"
+    },
+    {
+      "id": 16,
+      "principio": "Cloridrato de ambroxol",
+      "marcas": [
+        "Mucosolvan",
+        "Genérico"
+      ],
+      "classe": "Mucolítico / Expectorante",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Tosse com catarro (facilita eliminação)"
+      ],
+      "enfermidades": [
+        "tosse",
+        "catarro",
+        "secreção",
+        "bronquite"
+      ],
+      "posologia": "Adulto e formas pediátricas — conforme bula.",
+      "contraindicacoes": [
+        "Alergia ao ambroxol"
+      ],
+      "alertas": [
+        "Não usar junto com antitussígenos que 'secam' a tosse produtiva"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "cloridrato de ambroxol",
+      "tipo": "referência"
+    },
+    {
+      "id": 17,
+      "principio": "Cetoconazol (xampu/tópico)",
+      "marcas": [
+        "Nizoral",
+        "Genérico"
+      ],
+      "classe": "Antifúngico tópico",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Caspa",
+        "Dermatite seborreica",
+        "Micoses de pele (uso tópico)"
+      ],
+      "enfermidades": [
+        "caspa",
+        "micose",
+        "coceira no couro cabeludo",
+        "frieira",
+        "seborreia"
+      ],
+      "posologia": "Uso externo, conforme bula.",
+      "contraindicacoes": [
+        "Alergia ao cetoconazol"
+      ],
+      "alertas": [
+        "Apenas apresentações tópicas são de venda livre; comprimido é sob prescrição"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "cetoconazol xampu topico",
+      "tipo": "referência"
+    },
+    {
+      "id": 18,
+      "principio": "Nimesulida",
+      "marcas": [
+        "Nisulid",
+        "Genérico"
+      ],
+      "classe": "Anti-inflamatório não esteroide (AINE)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Dor",
+        "Inflamação"
+      ],
+      "enfermidades": [
+        "dor",
+        "inflamação",
+        "dor de dente",
+        "dor de garganta"
+      ],
+      "posologia": "Sob prescrição. Uso curto.",
+      "contraindicacoes": [
+        "Doença hepática",
+        "Úlcera ativa",
+        "Gestação (3º trimestre)"
+      ],
+      "alertas": [
+        "Risco hepático — não usar por conta própria"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "nimesulida",
+      "tipo": "referência"
+    },
+    {
+      "id": 19,
+      "principio": "Diclofenaco",
+      "marcas": [
+        "Cataflam",
+        "Voltaren",
+        "Genérico"
+      ],
+      "classe": "Anti-inflamatório não esteroide (AINE)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Dor",
+        "Inflamação (oral/injetável sob prescrição)"
+      ],
+      "enfermidades": [
+        "dor",
+        "inflamação",
+        "dor muscular",
+        "lombalgia"
+      ],
+      "posologia": "Oral/injetável sob prescrição. Gel tópico tem venda livre.",
+      "contraindicacoes": [
+        "Úlcera",
+        "Insuficiência renal/cardíaca grave"
+      ],
+      "alertas": [
+        "Cuidado cardiovascular e gástrico"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "diclofenaco",
+      "tipo": "referência"
+    },
+    {
+      "id": 20,
+      "principio": "Amoxicilina",
+      "marcas": [
+        "Amoxil",
+        "Genérico"
+      ],
+      "classe": "Antibiótico (penicilina)",
+      "tarja": "Vermelha (retenção)",
+      "generico": true,
+      "indicacoes": [
+        "Infecções bacterianas (garganta, ouvido, urina, etc.)"
+      ],
+      "enfermidades": [
+        "infecção",
+        "infecção de garganta",
+        "amigdalite",
+        "sinusite",
+        "infecção urinária"
+      ],
+      "posologia": "SOMENTE sob prescrição médica, com retenção de receita.",
+      "contraindicacoes": [
+        "Alergia a penicilinas"
+      ],
+      "alertas": [
+        "Não vender sem receita (RDC 20/2011)",
+        "Completar o tratamento prescrito"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "amoxicilina",
+      "tipo": "referência"
+    },
+    {
+      "id": 21,
+      "principio": "Amoxicilina + Clavulanato",
+      "marcas": [
+        "Clavulin",
+        "Genérico"
+      ],
+      "classe": "Antibiótico (penicilina + inibidor de betalactamase)",
+      "tarja": "Vermelha (retenção)",
+      "generico": true,
+      "indicacoes": [
+        "Infecções bacterianas resistentes"
+      ],
+      "enfermidades": [
+        "infecção",
+        "sinusite",
+        "infecção urinária",
+        "pneumonia"
+      ],
+      "posologia": "SOMENTE sob prescrição, com retenção de receita.",
+      "contraindicacoes": [
+        "Alergia a penicilinas",
+        "Histórico de icterícia por clavulanato"
+      ],
+      "alertas": [
+        "Não vender sem receita",
+        "Pode causar diarreia"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "amoxicilina clavulanato",
+      "tipo": "referência"
+    },
+    {
+      "id": 22,
+      "principio": "Azitromicina",
+      "marcas": [
+        "Zitromax",
+        "Genérico"
+      ],
+      "classe": "Antibiótico (macrolídeo)",
+      "tarja": "Vermelha (retenção)",
+      "generico": true,
+      "indicacoes": [
+        "Infecções respiratórias e outras"
+      ],
+      "enfermidades": [
+        "infecção",
+        "infecção de garganta",
+        "pneumonia",
+        "bronquite bacteriana"
+      ],
+      "posologia": "SOMENTE sob prescrição, com retenção de receita.",
+      "contraindicacoes": [
+        "Alergia a macrolídeos",
+        "Arritmias graves"
+      ],
+      "alertas": [
+        "Não vender sem receita"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "azitromicina",
+      "tipo": "referência"
+    },
+    {
+      "id": 23,
+      "principio": "Cefalexina",
+      "marcas": [
+        "Keflex",
+        "Genérico"
+      ],
+      "classe": "Antibiótico (cefalosporina)",
+      "tarja": "Vermelha (retenção)",
+      "generico": true,
+      "indicacoes": [
+        "Infecções de pele, urina, garganta"
+      ],
+      "enfermidades": [
+        "infecção",
+        "infecção urinária",
+        "infecção de pele"
+      ],
+      "posologia": "SOMENTE sob prescrição, com retenção de receita.",
+      "contraindicacoes": [
+        "Alergia a cefalosporinas"
+      ],
+      "alertas": [
+        "Não vender sem receita"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "cefalexina",
+      "tipo": "referência"
+    },
+    {
+      "id": 24,
+      "principio": "Losartana potássica",
+      "marcas": [
+        "Cozaar",
+        "Genérico"
+      ],
+      "classe": "Anti-hipertensivo (bloqueador do receptor de angiotensina)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Hipertensão arterial",
+        "Proteção renal (sob prescrição)"
+      ],
+      "enfermidades": [
+        "hipertensão",
+        "pressão alta"
+      ],
+      "posologia": "Uso contínuo sob prescrição.",
+      "contraindicacoes": [
+        "Gestação",
+        "Alergia à losartana"
+      ],
+      "alertas": [
+        "Não interromper por conta própria",
+        "Monitorar potássio/rim"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "losartana potassica",
+      "tipo": "referência"
+    },
+    {
+      "id": 25,
+      "principio": "Enalapril",
+      "marcas": [
+        "Renitec",
+        "Genérico"
+      ],
+      "classe": "Anti-hipertensivo (IECA)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Hipertensão",
+        "Insuficiência cardíaca"
+      ],
+      "enfermidades": [
+        "hipertensão",
+        "pressão alta",
+        "insuficiência cardíaca"
+      ],
+      "posologia": "Uso contínuo sob prescrição.",
+      "contraindicacoes": [
+        "Gestação",
+        "Angioedema prévio"
+      ],
+      "alertas": [
+        "Pode causar tosse seca",
+        "Não interromper por conta própria"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "enalapril",
+      "tipo": "referência"
+    },
+    {
+      "id": 26,
+      "principio": "Hidroclorotiazida",
+      "marcas": [
+        "Clorana",
+        "Genérico"
+      ],
+      "classe": "Diurético tiazídico",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Hipertensão",
+        "Edema (sob prescrição)"
+      ],
+      "enfermidades": [
+        "hipertensão",
+        "pressão alta",
+        "inchaço"
+      ],
+      "posologia": "Uso contínuo sob prescrição, geralmente pela manhã.",
+      "contraindicacoes": [
+        "Anúria",
+        "Alergia a sulfonamidas"
+      ],
+      "alertas": [
+        "Monitorar potássio/sódio"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "hidroclorotiazida",
+      "tipo": "referência"
+    },
+    {
+      "id": 27,
+      "principio": "Metformina",
+      "marcas": [
+        "Glifage",
+        "Genérico"
+      ],
+      "classe": "Antidiabético (biguanida)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Diabetes tipo 2"
+      ],
+      "enfermidades": [
+        "diabetes",
+        "açúcar alto",
+        "glicemia"
+      ],
+      "posologia": "Uso contínuo sob prescrição, junto às refeições.",
+      "contraindicacoes": [
+        "Insuficiência renal grave"
+      ],
+      "alertas": [
+        "Pode causar desconforto gastrointestinal",
+        "Suspender antes de exames com contraste (orientação médica)"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "metformina",
+      "tipo": "referência"
+    },
+    {
+      "id": 28,
+      "principio": "Glibenclamida",
+      "marcas": [
+        "Daonil",
+        "Genérico"
+      ],
+      "classe": "Antidiabético (sulfonilureia)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Diabetes tipo 2"
+      ],
+      "enfermidades": [
+        "diabetes",
+        "açúcar alto",
+        "glicemia"
+      ],
+      "posologia": "Uso contínuo sob prescrição.",
+      "contraindicacoes": [
+        "Diabetes tipo 1",
+        "Insuficiência renal/hepática grave"
+      ],
+      "alertas": [
+        "Risco de hipoglicemia — atenção a jejum e álcool"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "glibenclamida",
+      "tipo": "referência"
+    },
+    {
+      "id": 29,
+      "principio": "Sinvastatina",
+      "marcas": [
+        "Zocor",
+        "Genérico"
+      ],
+      "classe": "Hipolipemiante (estatina)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Colesterol alto",
+        "Prevenção cardiovascular"
+      ],
+      "enfermidades": [
+        "colesterol",
+        "colesterol alto",
+        "dislipidemia"
+      ],
+      "posologia": "Uso contínuo sob prescrição, geralmente à noite.",
+      "contraindicacoes": [
+        "Doença hepática ativa",
+        "Gestação"
+      ],
+      "alertas": [
+        "Relatar dor muscular intensa ao médico",
+        "Evitar suco de toranja (grapefruit)"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "sinvastatina",
+      "tipo": "referência"
+    },
+    {
+      "id": 30,
+      "principio": "Atorvastatina",
+      "marcas": [
+        "Lipitor",
+        "Citalor",
+        "Genérico"
+      ],
+      "classe": "Hipolipemiante (estatina)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Colesterol alto",
+        "Prevenção cardiovascular"
+      ],
+      "enfermidades": [
+        "colesterol",
+        "colesterol alto",
+        "dislipidemia"
+      ],
+      "posologia": "Uso contínuo sob prescrição.",
+      "contraindicacoes": [
+        "Doença hepática ativa",
+        "Gestação"
+      ],
+      "alertas": [
+        "Relatar dor muscular ao médico"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "atorvastatina",
+      "tipo": "referência"
+    },
+    {
+      "id": 31,
+      "principio": "Salbutamol",
+      "marcas": [
+        "Aerolin",
+        "Genérico"
+      ],
+      "classe": "Broncodilatador (beta-2 agonista)",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Asma",
+        "Broncoespasmo"
+      ],
+      "enfermidades": [
+        "asma",
+        "falta de ar",
+        "bronquite",
+        "chiado no peito"
+      ],
+      "posologia": "Inalatório sob prescrição, para alívio de crises.",
+      "contraindicacoes": [
+        "Alergia ao salbutamol"
+      ],
+      "alertas": [
+        "Uso frequente indica asma mal controlada — encaminhar ao médico",
+        "Pode causar tremor/taquicardia"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "salbutamol",
+      "tipo": "referência"
+    },
+    {
+      "id": 32,
+      "principio": "Prednisona",
+      "marcas": [
+        "Meticorten",
+        "Genérico"
+      ],
+      "classe": "Corticosteroide",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Inflamações",
+        "Alergias graves",
+        "Doenças autoimunes (sob prescrição)"
+      ],
+      "enfermidades": [
+        "inflamação",
+        "alergia grave",
+        "asma",
+        "crise alérgica"
+      ],
+      "posologia": "Sob prescrição; retirada gradual quando em uso prolongado.",
+      "contraindicacoes": [
+        "Infecção fúngica sistêmica"
+      ],
+      "alertas": [
+        "Não interromper abruptamente após uso prolongado",
+        "Pode elevar glicemia e pressão"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "prednisona",
+      "tipo": "referência"
+    },
+    {
+      "id": 33,
+      "principio": "Aciclovir",
+      "marcas": [
+        "Zovirax",
+        "Genérico"
+      ],
+      "classe": "Antiviral",
+      "tarja": "Vermelha",
+      "generico": true,
+      "indicacoes": [
+        "Herpes simples",
+        "Herpes-zóster (oral sob prescrição)"
+      ],
+      "enfermidades": [
+        "herpes",
+        "herpes labial",
+        "cobreiro",
+        "zóster"
+      ],
+      "posologia": "Creme tópico venda livre; comprimido sob prescrição.",
+      "contraindicacoes": [
+        "Alergia ao aciclovir"
+      ],
+      "alertas": [
+        "Iniciar cedo aumenta eficácia"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "aciclovir",
+      "tipo": "referência"
+    },
+    {
+      "id": 34,
+      "principio": "Sertralina",
+      "marcas": [
+        "Zoloft",
+        "Genérico"
+      ],
+      "classe": "Antidepressivo (ISRS)",
+      "tarja": "Vermelha (retenção)",
+      "generico": true,
+      "indicacoes": [
+        "Depressão",
+        "Ansiedade",
+        "Pânico (sob prescrição)"
+      ],
+      "enfermidades": [
+        "depressão",
+        "ansiedade",
+        "pânico",
+        "TOC"
+      ],
+      "posologia": "Uso contínuo sob prescrição; efeito em algumas semanas.",
+      "contraindicacoes": [
+        "Uso com IMAO"
+      ],
+      "alertas": [
+        "Venda com retenção de receita",
+        "Não interromper por conta própria"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "sertralina",
+      "tipo": "referência"
+    },
+    {
+      "id": 35,
+      "principio": "Clonazepam",
+      "marcas": [
+        "Rivotril",
+        "Genérico"
+      ],
+      "classe": "Benzodiazepínico (ansiolítico/anticonvulsivante)",
+      "tarja": "Preta/Controlada",
+      "generico": true,
+      "indicacoes": [
+        "Ansiedade",
+        "Convulsões (sob prescrição)"
+      ],
+      "enfermidades": [
+        "ansiedade",
+        "insônia",
+        "convulsão",
+        "epilepsia"
+      ],
+      "posologia": "SOMENTE com Notificação de Receita (receita azul — B1).",
+      "contraindicacoes": [
+        "Miastenia gravis",
+        "Glaucoma de ângulo fechado",
+        "Dependência"
+      ],
+      "alertas": [
+        "Substância controlada — exige Notificação de Receita",
+        "Risco de dependência e sonolência",
+        "Não associar a álcool"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "clonazepam",
+      "tipo": "referência"
+    },
+    {
+      "id": 36,
+      "principio": "Escopolamina + Dipirona",
+      "marcas": [
+        "Buscopan Composto",
+        "Genérico"
+      ],
+      "classe": "Antiespasmódico + Analgésico",
+      "tarja": "Livre",
+      "generico": true,
+      "indicacoes": [
+        "Cólica com dor"
+      ],
+      "enfermidades": [
+        "cólica",
+        "cólica menstrual",
+        "dor abdominal"
+      ],
+      "posologia": "Adulto: conforme bula.",
+      "contraindicacoes": [
+        "Glaucoma",
+        "Alergia a pirazolonas",
+        "Obstrução intestinal/urinária"
+      ],
+      "alertas": [
+        "Contém dipirona — atenção a alergias"
+      ],
+      "ean": null,
+      "preco": null,
+      "laboratorio": null,
+      "grupo": "escopolamina dipirona",
+      "tipo": "referência"
+    }
   ]
 }
