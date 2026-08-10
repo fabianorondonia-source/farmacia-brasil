@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmácia Brasil — Consulta de Balcão</title>
+<style>
+  :root{
+    --verde:#0a7c46; --verde-esc:#075c34; --verde-claro:#e8f5ee;
+    --cinza:#f4f6f8; --texto:#1f2a30; --suave:#5b6b73; --linha:#e2e8ec;
+    --tarja-livre:#188a4c; --tarja-vermelha:#c62828; --tarja-preta:#37474f; --tarja-ret:#d84315;
+    --alerta-bg:#fff8e1; --alerta-bd:#f0c000;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--texto);background:var(--cinza)}
+  header{background:linear-gradient(135deg,var(--verde),var(--verde-esc));color:#fff;padding:18px 20px}
+  header .cruz{display:inline-block;background:#fff;color:var(--verde);font-weight:800;border-radius:8px;padding:2px 9px;margin-right:10px}
+  header h1{margin:0;font-size:1.35rem;display:flex;align-items:center}
+  header p{margin:4px 0 0 0;opacity:.9;font-size:.85rem}
+  .aviso{background:var(--alerta-bg);border-bottom:1px solid var(--alerta-bd);color:#7a5c00;font-size:.82rem;padding:8px 20px}
+  .wrap{max-width:1040px;margin:0 auto;padding:16px}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{flex:1 1 auto;min-width:130px;text-align:center;padding:11px 10px;background:#fff;border:1px solid var(--linha);border-radius:10px;cursor:pointer;font-weight:600;color:var(--suave);user-select:none}
+  .tab.ativo{background:var(--verde);color:#fff;border-color:var(--verde)}
+  .painel{display:none}
+  .painel.ativo{display:block;animation:fade .2s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .campo{width:100%;padding:13px 15px;font-size:1rem;border:1.5px solid var(--linha);border-radius:10px;background:#fff}
+  .campo:focus{outline:none;border-color:var(--verde)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+  .chip{background:var(--verde-claro);color:var(--verde-esc);border:1px solid #cde9d8;border-radius:20px;padding:6px 13px;font-size:.83rem;cursor:pointer}
+  .chip:hover{background:#d7efe0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:14px}
+  .card{background:#fff;border:1px solid var(--linha);border-radius:12px;padding:14px;cursor:pointer;transition:box-shadow .15s,transform .15s}
+  .card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+  .card h3{margin:0 0 4px 0;font-size:1.05rem}
+  .card .classe{color:var(--suave);font-size:.82rem;margin-bottom:8px}
+  .card .marcas{font-size:.8rem;color:var(--suave)}
+  .tarja{display:inline-block;font-size:.7rem;font-weight:700;color:#fff;border-radius:6px;padding:3px 8px;margin-bottom:6px;letter-spacing:.02em}
+  .t-Livre{background:var(--tarja-livre)}
+  .t-Vermelha{background:var(--tarja-vermelha)}
+  .t-Vermelharet{background:var(--tarja-ret)}
+  .t-Preta{background:var(--tarja-preta)}
+  .vazio{text-align:center;color:var(--suave);padding:40px 10px}
+  .conta{color:var(--suave);font-size:.85rem;margin-top:6px}
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:flex-start;justify-content:center;padding:20px;overflow:auto;z-index:50}
+  .overlay.aberto{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:22px;margin:auto}
+  .modal h2{margin:0 0 2px 0}
+  .modal .sub{color:var(--suave);margin-bottom:12px}
+  .bloco{margin:12px 0}
+  .bloco .rot{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);font-weight:700;margin-bottom:4px}
+  .bloco ul{margin:4px 0;padding-left:20px}
+  .bloco li{margin:2px 0}
+  .alerta-box{background:var(--alerta-bg);border:1px solid var(--alerta-bd);border-radius:10px;padding:10px 12px;font-size:.86rem;color:#6b5200}
+  .receita-box{background:#fdecec;border:1px solid #f3b3b3;border-radius:10px;padding:10px 12px;font-size:.86rem;color:#8c1c1c;font-weight:600}
+  .btns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .btn{flex:1;text-align:center;padding:11px;border-radius:10px;border:none;font-weight:600;cursor:pointer;font-size:.92rem}
+  .btn-anvisa{background:#1565c0;color:#fff;text-decoration:none}
+  .btn-fechar{background:var(--cinza);color:var(--texto)}
+  .btn-cmp{background:var(--verde);color:#fff}
+  /* comparar */
+  .cmp-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:12px 0}
+  .cmp-item{background:#fff;border:1px solid var(--linha);border-radius:8px;padding:8px 10px;font-size:.85rem;display:flex;align-items:center;gap:8px;cursor:pointer}
+  .cmp-item input{width:16px;height:16px}
+  .tabela-cmp{width:100%;border-collapse:collapse;margin-top:14px;background:#fff;border-radius:10px;overflow:hidden}
+  .tabela-cmp th,.tabela-cmp td{border:1px solid var(--linha);padding:10px;font-size:.85rem;vertical-align:top;text-align:left}
+  .tabela-cmp th{background:var(--verde-claro)}
+  .tabela-cmp .lbl{background:var(--cinza);font-weight:700;width:130px}
+  footer{max-width:1040px;margin:10px auto 30px;padding:0 16px;color:var(--suave);font-size:.78rem;text-align:center}
+  .selo-doenca{background:#fff;border:1px solid var(--linha);border-radius:12px;padding:14px;margin-top:14px}
+  .selo-doenca h4{margin:0 0 6px}
+  @media(max-width:520px){.tab{min-width:calc(50% - 6px)}}
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="cruz">+</span> Farmácia Brasil</h1>
+  <p>Consulta de balcão — apoio ao atendimento</p>
+</header>
+<div class="aviso">
+  ⚠️ <b>Ferramenta de apoio.</b> Não substitui o farmacêutico responsável nem a prescrição médica. Confira sempre a <b>tarja</b> e a <b>bula oficial</b> antes de orientar ou dispensar.
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab ativo" data-p="buscar">🔎 Buscar medicamento</div>
+    <div class="tab" data-p="doenca">🩺 Por doença / sintoma</div>
+    <div class="tab" data-p="comparar">⚖️ Comparar</div>
+    <div class="tab" data-p="sobre">ℹ️ Segurança</div>
+  </div>
+
+  <!-- BUSCAR -->
+  <div class="painel ativo" id="p-buscar">
+    <input class="campo" id="busca" placeholder="Digite o medicamento, princípio ativo, marca ou classe... (ex: paracetamol, azia, Tylenol)">
+    <div class="conta" id="conta-busca"></div>
+    <div class="grid" id="res-busca"></div>
+  </div>
+
+  <!-- DOENÇA -->
+  <div class="painel" id="p-doenca">
+    <input class="campo" id="busca-doenca" placeholder="Digite a doença ou sintoma... (ex: dor de cabeça, alergia, pressão alta, diabetes)">
+    <div class="chips" id="chips-doenca"></div>
+    <div id="res-doenca"></div>
+  </div>
+
+  <!-- COMPARAR -->
+  <div class="painel" id="p-comparar">
+    <p style="color:var(--suave);font-size:.9rem">Selecione até 3 medicamentos para comparar lado a lado.</p>
+    <input class="campo" id="filtro-cmp" placeholder="Filtrar lista...">
+    <div class="cmp-lista" id="cmp-lista"></div>
+    <div id="cmp-resultado"></div>
+  </div>
+
+  <!-- SOBRE -->
+  <div class="painel" id="p-sobre">
+    <div class="selo-doenca">
+      <h4>Como usar esta ferramenta com segurança</h4>
+      <ul>
+        <li><b>Tarja Livre (verde):</b> medicamento isento de prescrição (MIP) — venda livre.</li>
+        <li><b>Tarja Vermelha:</b> venda somente sob prescrição médica.</li>
+        <li><b>Vermelha (retenção):</b> antibióticos — exigem <b>retenção da receita</b> (RDC 20/2011).</li>
+        <li><b>Preta / Controlada:</b> exigem <b>Notificação de Receita</b> (Portaria 344/98).</li>
+      </ul>
+      <div class="alerta-box" style="margin-top:10px">
+        Esta é uma <b>base inicial curada</b> para demonstração e apoio. Antes do uso real no balcão, todo o conteúdo deve ser <b>validado pelo farmacêutico responsável</b>. A bula completa e oficial está no <b>Bulário Eletrônico da ANVISA</b>. Fontes previstas: ANVISA (Dados Abertos) + catálogo ABCFarma.
+      </div>
+      <p style="font-size:.8rem;color:var(--suave);margin-top:12px" id="meta-info"></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Farmácia Brasil · Consulta de balcão · Não substitui avaliação profissional. Em caso de dúvida, encaminhe ao farmacêutico.
+</footer>
+
+<!-- MODAL FICHA -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal-conteudo"></div>
+</div>
+
+<script>
+let DADOS = [];
+let META = {};
+const cmpSelecionados = new Set();
+
+function normaliza(s){return (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function tarjaClasse(t){
+  if(t==='Livre')return 't-Livre';
+  if(t==='Preta/Controlada')return 't-Preta';
+  if(t && t.indexOf('reten')>=0)return 't-Vermelharet';
+  return 't-Vermelha';
+}
+function exigeReceita(t){return t!=='Livre';}
+
+fetch('medicamentos.json?v='+Date.now())
+  .then(r=>r.json())
+  .then(d=>{
+    DADOS = d.medicamentos.sort((a,b)=>a.principio.localeCompare(b.principio,'pt'));
+    META = d.meta||{};
+    document.getElementById('meta-info').textContent =
+      'Versão '+(META.versao||'?')+' · atualizado em '+(META.atualizado_em||'?')+' · '+DADOS.length+' medicamentos na base.';
+    montarBusca(''); montarChipsDoenca(); montarCmpLista('');
+  })
+  .catch(e=>{
+    document.getElementById('res-busca').innerHTML='<div class="vazio">Não foi possível carregar a base de dados (medicamentos.json).</div>';
+  });
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('ativo'));
+    document.querySelectorAll('.painel').forEach(x=>x.classList.remove('ativo'));
+    t.classList.add('ativo');
+    document.getElementById('p-'+t.dataset.p).classList.add('ativo');
+  });
+});
+
+/* ---------- Buscar ---------- */
+function cardHTML(m){
+  return '<div class="card" onclick="abrirFicha('+m.id+')">'+
+    '<span class="tarja '+tarjaClasse(m.tarja)+'">'+m.tarja+'</span>'+
+    '<h3>'+m.principio+'</h3>'+
+    '<div class="classe">'+m.classe+'</div>'+
+    '<div class="marcas">Ex.: '+ (m.marcas||[]).join(', ') +'</div>'+
+  '</div>';
+}
+function montarBusca(q){
+  const nq = normaliza(q);
+  const res = !nq ? DADOS : DADOS.filter(m=>{
+    const alvo = normaliza([m.principio,m.classe,(m.marcas||[]).join(' '),(m.enfermidades||[]).join(' '),(m.indicacoes||[]).join(' ')].join(' '));
+    return alvo.indexOf(nq)>=0;
+  });
+  document.getElementById('conta-busca').textContent = res.length+' resultado(s)';
+  document.getElementById('res-busca').innerHTML = res.length ? res.map(cardHTML).join('') :
+    '<div class="vazio">Nenhum medicamento encontrado para "'+q+'".</div>';
+}
+document.getElementById('busca').addEventListener('input',e=>montarBusca(e.target.value));
+
+/* ---------- Ficha / modal ---------- */
+function lista(arr){return '<ul>'+ (arr||[]).map(x=>'<li>'+x+'</li>').join('') +'</ul>';}
+function anvisaURL(m){return 'https://consultas.anvisa.gov.br/#/bulario/q/?nomeProduto='+encodeURIComponent(m.principio);}
+function abrirFicha(id){
+  const m = DADOS.find(x=>x.id===id); if(!m)return;
+  let html = '<span class="tarja '+tarjaClasse(m.tarja)+'">'+m.tarja+'</span>'+
+    '<h2>'+m.principio+'</h2><div class="sub">'+m.classe+'</div>';
+  if(exigeReceita(m.tarja)){
+    html += '<div class="receita-box">🔴 Exige receita médica'+(m.tarja.indexOf('reten')>=0?' — COM RETENÇÃO da receita':'')+
+      (m.tarja.indexOf('Preta')>=0?' — Notificação de Receita (controlado)':'')+'. Não dispensar sem apresentação.</div>';
+  } else {
+    html += '<div class="alerta-box">🟢 Venda livre (MIP). Ainda assim, oriente sobre uso correto e sinais de alerta.</div>';
+  }
+  html += '<div class="bloco"><div class="rot">Exemplos de marcas</div>'+(m.marcas||[]).join(', ')+(m.generico?' · <b>tem genérico</b>':'')+'</div>';
+  html += '<div class="bloco"><div class="rot">Indicações</div>'+lista(m.indicacoes)+'</div>';
+  html += '<div class="bloco"><div class="rot">Posologia (referência)</div>'+ (m.posologia||'—') +'</div>';
+  html += '<div class="bloco"><div class="rot">Contraindicações</div>'+lista(m.contraindicacoes)+'</div>';
+  if(m.alertas && m.alertas.length){
+    html += '<div class="bloco"><div class="rot">Alertas</div><div class="alerta-box">'+lista(m.alertas)+'</div></div>';
+  }
+  html += '<div class="btns">'+
+    '<a class="btn btn-anvisa" href="'+anvisaURL(m)+'" target="_blank" rel="noopener">📄 Bula oficial (ANVISA)</a>'+
+    '<button class="btn btn-cmp" onclick="adicionarComparar('+m.id+')">⚖️ Adicionar ao comparar</button>'+
+    '<button class="btn btn-fechar" onclick="fecharModal()">Fechar</button>'+
+  '</div>';
+  document.getElementById('modal-conteudo').innerHTML = html;
+  document.getElementById('overlay').classList.add('aberto');
+}
+function fecharModal(){document.getElementById('overlay').classList.remove('aberto');}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')fecharModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModal();});
+
+/* ---------- Doença / sintoma ---------- */
+function montarChipsDoenca(){
+  const conta={};
+  DADOS.forEach(m=>(m.enfermidades||[]).forEach(e=>conta[e]=(conta[e]||0)+1));
+  const top = Object.keys(conta).sort((a,b)=>conta[b]-conta[a]).slice(0,14);
+  document.getElementById('chips-doenca').innerHTML = top.map(e=>'<span class="chip" onclick="buscarDoenca(\''+e.replace(/'/g,"")+'\')">'+e+'</span>').join('');
+}
+function buscarDoenca(q){
+  document.getElementById('busca-doenca').value=q;
+  renderDoenca(q);
+}
+function renderDoenca(q){
+  const nq = normaliza(q);
+  const box = document.getElementById('res-doenca');
+  if(!nq){box.innerHTML='<div class="vazio">Digite uma doença ou sintoma, ou toque em uma sugestão acima.</div>';return;}
+  const res = DADOS.filter(m=> normaliza((m.enfermidades||[]).join(' ')+' '+(m.indicacoes||[]).join(' ')).indexOf(nq)>=0);
+  if(!res.length){box.innerHTML='<div class="vazio">Nenhum produto associado a "'+q+'" na base. Encaminhe ao farmacêutico.</div>';return;}
+  const livres = res.filter(m=>!exigeReceita(m.tarja));
+  const receita = res.filter(m=>exigeReceita(m.tarja));
+  let html = '<div class="selo-doenca"><h4>Resultados para: '+q+'</h4>'+
+    '<div class="alerta-box">Sugestões de apoio. A escolha final depende de avaliação do caso, contraindicações e, quando exigido, de <b>prescrição médica</b>. Sintomas de alerta (febre alta, dor intensa, sangramento, falta de ar, sintomas persistentes) → encaminhar imediatamente.</div></div>';
+  if(livres.length){
+    html += '<h4 style="margin:16px 0 4px">🟢 Venda livre (MIP)</h4><div class="grid">'+livres.map(cardHTML).join('')+'</div>';
+  }
+  if(receita.length){
+    html += '<h4 style="margin:18px 0 4px">🔴 Somente com receita</h4><div class="grid">'+receita.map(cardHTML).join('')+'</div>';
+  }
+  box.innerHTML = html;
+}
+document.getElementById('busca-doenca').addEventListener('input',e=>renderDoenca(e.target.value));
+
+/* ---------- Comparar ---------- */
+function montarCmpLista(filtro){
+  const nq=normaliza(filtro);
+  const lista = !nq?DADOS:DADOS.filter(m=>normaliza(m.principio+' '+(m.marcas||[]).join(' ')).indexOf(nq)>=0);
+  document.getElementById('cmp-lista').innerHTML = lista.map(m=>
+    '<label class="cmp-item"><input type="checkbox" '+(cmpSelecionados.has(m.id)?'checked':'')+' onchange="toggleCmp('+m.id+',this.checked)"> '+m.principio+'</label>'
+  ).join('');
+}
+document.getElementById('filtro-cmp').addEventListener('input',e=>montarCmpLista(e.target.value));
+function toggleCmp(id,on){
+  if(on){ if(cmpSelecionados.size>=3){alert('Máximo de 3 medicamentos para comparar.');montarCmpLista(document.getElementById('filtro-cmp').value);return;} cmpSelecionados.add(id);}
+  else cmpSelecionados.delete(id);
+  renderComparar();
+}
+function adicionarComparar(id){
+  if(!cmpSelecionados.has(id)){ if(cmpSelecionados.size>=3){alert('Máximo de 3 para comparar. Remova um antes.');return;} cmpSelecionados.add(id);}
+  fecharModal();
+  document.querySelector('.tab[data-p="comparar"]').click();
+  montarCmpLista(document.getElementById('filtro-cmp').value); renderComparar();
+}
+function linhaCmp(rot,fn){
+  let tds = [...cmpSelecionados].map(id=>{const m=DADOS.find(x=>x.id===id);return '<td>'+fn(m)+'</td>';}).join('');
+  return '<tr><td class="lbl">'+rot+'</td>'+tds+'</tr>';
+}
+function renderComparar(){
+  const box=document.getElementById('cmp-resultado');
+  if(cmpSelecionados.size<2){box.innerHTML='<div class="vazio">Selecione ao menos 2 medicamentos.</div>';return;}
+  let ths = [...cmpSelecionados].map(id=>{const m=DADOS.find(x=>x.id===id);return '<th>'+m.principio+'</th>';}).join('');
+  let html='<table class="tabela-cmp"><tr><th class="lbl">Comparação</th>'+ths+'</tr>';
+  html+=linhaCmp('Tarja',m=>'<span class="tarja '+tarjaClasse(m.tarja)+'">'+m.tarja+'</span>');
+  html+=linhaCmp('Classe',m=>m.classe);
+  html+=linhaCmp('Marcas',m=>(m.marcas||[]).join(', '));
+  html+=linhaCmp('Genérico',m=>m.generico?'Sim':'Não');
+  html+=linhaCmp('Indicações',m=>(m.indicacoes||[]).join('; '));
+  html+=linhaCmp('Contraindicações',m=>(m.contraindicacoes||[]).join('; '));
+  html+=linhaCmp('Alertas',m=>(m.alertas||[]).join('; '));
+  html+='</table>';
+  box.innerHTML=html;
+}
+
+/* ---------- Live-reload local (SSE, ignorado no GitHub Pages) ---------- */
+try{
+  const es=new EventSource('/events');
+  es.onmessage=()=>location.reload();
+}catch(e){}
+</script>
+</body>
+</html>
