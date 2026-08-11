@@ -21,6 +21,11 @@ jobs:
           python-version: "3.11"
 
       - name: Construir catálogo
+        env:
+          # Defina a variável de repositório ANVISA_URL com a URL /anvisa do seu
+          # Cloudflare Worker (ponte). Sem ela, tenta a ANVISA direto (bloqueada
+          # a partir dos servidores do GitHub, nos EUA).
+          URL_ANVISA: ${{ vars.ANVISA_URL || 'https://dados.anvisa.gov.br/dados/DADOS_ABERTOS_MEDICAMENTOS.csv' }}
         run: DATA_BUILD=$(date -u +%F) python scripts/construir_catalogo.py
 
       - name: Commitar se mudou
