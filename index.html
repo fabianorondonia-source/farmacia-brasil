@@ -3,104 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#0f6e56">
+<meta name="theme-color" content="#0c1210">
 <title>Farmácia Brasil — Consulta de Balcão</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <style>
   :root{
-    --verde:#0f6e56; --verde2:#0a5842; --verde-bg:#e1f5ee;
-    --bg:#f5f7f6; --surface:#ffffff; --texto:#16211d; --suave:#5b6b66; --muted:#8a978f; --linha:#e3e9e6;
-    --amarelo-bg:#fbf3df; --amarelo-tx:#7a5c00; --amarelo-bd:#ecd9a3;
-    --vermelho-bg:#fbe9e9; --vermelho-tx:#a32d2d;
-    --radius:12px; --sombra:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.05);
+    --bg:#eef2f0; --surface:#ffffff; --panel:#f1f5f3; --panel2:#e9efec;
+    --texto:#0e1a15; --suave:#455049; --muted:#77857e; --linha:#dbe4df; --linha2:#ccd8d2;
+    --acc:#0b7c5c; --acc-strong:#095f47; --acc-bg:#dff3ea; --acc-fill:#0f9268;
+    --amarelo-bg:#fbf1d8; --amarelo-tx:#8a6300; --amarelo-bd:#ecd9a3;
+    --verm-bg:#fceae9; --verm-tx:#b02f2f; --verm-bd:#f2cccc;
+    --laranja-bg:#f8e7d8; --laranja-tx:#9a4a12;
+    --radius:12px; --sombra:0 1px 2px rgba(20,40,32,.05),0 6px 20px rgba(20,40,32,.06);
   }
   @media (prefers-color-scheme: dark){
-    :root{ --bg:#121613; --surface:#1b211e; --texto:#e8efec; --suave:#a3b0aa; --muted:#7d8a84; --linha:#2b332f;
-      --verde-bg:#123a30; --amarelo-bg:#2e2713; --amarelo-tx:#e8c976; --amarelo-bd:#4a3f1f;
-      --vermelho-bg:#33201f; --vermelho-tx:#e88b8b; --sombra:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.35);}
+    :root{
+      --bg:#0b110f; --surface:#141b18; --panel:#111815; --panel2:#1a231f;
+      --texto:#eef4f1; --suave:#b0bfb8; --muted:#7f8e87; --linha:#26302b; --linha2:#33403a;
+      --acc:#3ddca0; --acc-strong:#63e7b6; --acc-bg:#12332a; --acc-fill:#17a578;
+      --amarelo-bg:#2a2413; --amarelo-tx:#f0cf82; --amarelo-bd:#463c1e;
+      --verm-bg:#2d1b1a; --verm-tx:#f2a2a2; --verm-bd:#48292a;
+      --laranja-bg:#2f2115; --laranja-tx:#e8a670;
+      --sombra:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.4);
+    }
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--texto);background:var(--bg);-webkit-tap-highlight-color:transparent}
-  button{font-family:inherit;cursor:pointer}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--texto);background:var(--bg);-webkit-tap-highlight-color:transparent;font-size:16px;line-height:1.5}
+  button{font-family:inherit;cursor:pointer;color:inherit}
   .topo{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--linha)}
-  .topo-in{max-width:1120px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:12px}
-  .logo{width:38px;height:38px;border-radius:10px;background:var(--verde);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;flex-shrink:0}
+  .topo-in{max-width:1160px;margin:0 auto;padding:13px 20px;display:flex;align-items:center;gap:13px}
+  .logo{width:40px;height:40px;border-radius:11px;background:var(--acc-fill);color:#fff;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:800;flex-shrink:0}
   .marca{flex:1;min-width:0}
-  .marca b{display:block;font-size:1.05rem;line-height:1.15}
-  .marca span{font-size:.78rem;color:var(--suave)}
-  .selo-rt{font-size:.75rem;color:var(--verde);background:var(--verde-bg);border-radius:20px;padding:5px 11px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
-  .btn-inst{display:none;font-size:.8rem;padding:8px 12px;border:1px solid var(--linha);background:var(--surface);color:var(--texto);border-radius:9px}
-  .barra{max-width:1120px;margin:0 auto;padding:14px 18px 0;display:flex;gap:8px}
-  .campo-wrap{flex:1;display:flex;align-items:center;gap:9px;background:var(--surface);border:1.5px solid var(--linha);border-radius:11px;padding:0 14px;height:48px;transition:border-color .15s}
-  .campo-wrap:focus-within{border-color:var(--verde)}
-  .campo-wrap svg{flex-shrink:0}
-  .campo{flex:1;border:none;background:transparent;font-size:1rem;color:var(--texto);height:100%;outline:none}
-  .btn-scan{display:inline-flex;align-items:center;gap:7px;height:48px;padding:0 16px;background:var(--verde);color:#fff;border:none;border-radius:11px;font-size:.95rem;font-weight:600}
-  .btn-scan:active{transform:scale(.98)}
-  .tabs{max-width:1120px;margin:0 auto;padding:12px 18px 0;display:flex;gap:8px;overflow-x:auto}
-  .tab{white-space:nowrap;padding:9px 15px;border-radius:9px;border:1px solid var(--linha);background:var(--surface);color:var(--suave);font-size:.9rem;font-weight:600}
-  .tab.on{background:var(--verde);border-color:var(--verde);color:#fff}
-  .main{max-width:1120px;margin:0 auto;padding:16px 18px 90px}
-  .split{display:grid;grid-template-columns:340px 1fr;gap:16px;align-items:start}
-  @media(max-width:820px){.split{grid-template-columns:1fr}.detalhe.vazio-mobile{display:none}}
-  .conta{font-size:.82rem;color:var(--suave);margin-bottom:8px}
-  .lista{display:flex;flex-direction:column;gap:8px;max-height:70vh;overflow:auto}
-  .item{background:var(--surface);border:1px solid var(--linha);border-radius:11px;padding:11px 13px;text-align:left;width:100%;transition:border-color .12s}
-  .item:hover{border-color:var(--verde)}
-  .item.sel{border:2px solid var(--verde);padding:10px 12px}
+  .marca b{display:block;font-size:1.12rem;font-weight:700;line-height:1.1;letter-spacing:-.01em}
+  .marca span{font-size:.8rem;color:var(--muted)}
+  .selo-rt{font-size:.78rem;font-weight:600;color:var(--acc-strong);background:var(--acc-bg);border:1px solid var(--acc);border-radius:20px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .btn-inst{display:none;font-size:.82rem;font-weight:600;padding:9px 13px;border:1px solid var(--linha2);background:var(--surface);color:var(--texto);border-radius:10px}
+  .btn-inst:hover{background:var(--panel)}
+  .aviso-topo{background:var(--amarelo-bg);color:var(--amarelo-tx);font-size:.83rem;font-weight:500;padding:9px 20px;text-align:center;border-bottom:1px solid var(--amarelo-bd)}
+  .barra{max-width:1160px;margin:0 auto;padding:16px 20px 0;display:flex;gap:10px}
+  .campo-wrap{flex:1;display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--linha2);border-radius:12px;padding:0 15px;height:50px;transition:border-color .15s,box-shadow .15s}
+  .campo-wrap:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-bg)}
+  .campo{flex:1;border:none;background:transparent;font-size:1.02rem;color:var(--texto);height:100%;outline:none}
+  .campo::placeholder{color:var(--muted)}
+  .btn-scan{display:inline-flex;align-items:center;gap:8px;height:50px;padding:0 20px;background:var(--acc-fill);color:#fff;border:none;border-radius:12px;font-size:.98rem;font-weight:600}
+  .btn-scan:hover{filter:brightness(1.06)}.btn-scan:active{transform:scale(.98)}
+  .tabs{max-width:1160px;margin:0 auto;padding:14px 20px 0;display:flex;gap:8px;overflow-x:auto}
+  .tab{white-space:nowrap;padding:10px 17px;border-radius:10px;border:1px solid var(--linha2);background:var(--surface);color:var(--suave);font-size:.92rem;font-weight:600}
+  .tab:hover{border-color:var(--acc)}
+  .tab.on{background:var(--acc-fill);border-color:var(--acc-fill);color:#fff}
+  .main{max-width:1160px;margin:0 auto;padding:18px 20px 100px}
+  .split{display:grid;grid-template-columns:352px 1fr;gap:18px;align-items:start}
+  @media(max-width:860px){.split{grid-template-columns:1fr}.detalhe.vazio-mobile{display:none}}
+  .conta{font-size:.82rem;color:var(--muted);margin-bottom:10px;font-weight:500}
+  .lista{display:flex;flex-direction:column;gap:9px;max-height:74vh;overflow:auto;padding-right:4px}
+  .item{background:var(--surface);border:1px solid var(--linha);border-radius:12px;padding:13px 15px;text-align:left;width:100%;transition:border-color .12s,transform .1s;box-shadow:var(--sombra)}
+  .item:hover{border-color:var(--acc)}
+  .item.sel{border:2px solid var(--acc);padding:12px 14px}
   .item-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .item h4{margin:6px 0 2px;font-size:1rem}
-  .item .cl{font-size:.8rem;color:var(--suave)}
-  .tarja{font-size:.68rem;font-weight:700;border-radius:6px;padding:3px 8px;white-space:nowrap}
-  .t-livre{background:#eaf3de;color:#2c4a10}
-  .t-verm{background:var(--vermelho-bg);color:var(--vermelho-tx)}
-  .t-ret{background:#f7e2d5;color:#7a3410}
-  .t-preta{background:#e2e6e4;color:#33413b}
-  @media (prefers-color-scheme: dark){.t-livre{background:#23401a;color:#bfe08f}.t-ret{background:#3a2b1e;color:#e6b08a}.t-preta{background:#2b332f;color:#c3ccc7}}
-  .preco{font-size:.9rem;font-weight:700}
-  .preco.eco{color:var(--verde)}
+  .item h4{margin:8px 0 3px;font-size:1.04rem;font-weight:600}
+  .item .cl{font-size:.83rem;color:var(--suave)}
+  .tarja{font-size:.7rem;font-weight:700;border-radius:7px;padding:3px 9px;white-space:nowrap;letter-spacing:.01em}
+  .t-livre{background:#d3efe0;color:#0a5f45}
+  .t-verm{background:#f7dedd;color:#a52c2c}
+  .t-ret{background:#f6e0cd;color:#8a4212}
+  .t-preta{background:#dde4e0;color:#2f3b35}
+  @media (prefers-color-scheme: dark){
+    .t-livre{background:#17402f;color:#74e6b0}
+    .t-verm{background:#3a2321;color:#f3a3a3}
+    .t-ret{background:#3a2917;color:#eaad76}
+    .t-preta{background:#2a332e;color:#c6d0ca}
+  }
+  .preco{font-size:.9rem;font-weight:700;color:var(--texto)}
+  .preco.eco{color:var(--acc)}
   .preco.nd{color:var(--muted);font-weight:500;font-size:.8rem}
-  .detalhe{background:var(--surface);border:1px solid var(--linha);border-radius:var(--radius);padding:18px;box-shadow:var(--sombra);min-height:200px}
-  .det-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-  .det-head h2{margin:0;font-size:1.35rem}
-  .det-head .cl{color:var(--suave);font-size:.9rem;margin-top:2px}
-  .metric-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
-  .metric{background:var(--bg);border-radius:10px;padding:10px 12px}
-  .metric .l{font-size:.72rem;color:var(--suave)}
-  .metric .v{font-size:1.1rem;font-weight:700;margin-top:2px}
-  .metric .v.mono{font-family:ui-monospace,Menlo,monospace;font-size:.95rem}
-  .receita{display:flex;align-items:center;gap:8px;background:var(--vermelho-bg);color:var(--vermelho-tx);border-radius:10px;padding:10px 12px;font-size:.86rem;font-weight:600;margin:12px 0}
-  .livre-box{display:flex;align-items:center;gap:8px;background:var(--verde-bg);color:var(--verde);border-radius:10px;padding:10px 12px;font-size:.86rem;margin:12px 0}
-  .sec{margin-top:16px}
-  .sec .rot{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-  .sec ul{margin:0;padding-left:18px}.sec li{margin:3px 0;font-size:.92rem}
-  .alerta{background:var(--amarelo-bg);border:1px solid var(--amarelo-bd);color:var(--amarelo-tx);border-radius:10px;padding:8px 12px;font-size:.86rem}
-  .alerta ul{padding-left:16px;margin:2px 0}
-  .equiv{display:flex;flex-direction:column;gap:6px}
-  .equiv-row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--linha);border-radius:9px;padding:8px 11px;font-size:.9rem}
-  .badge-tipo{font-size:.68rem;font-weight:700;color:var(--suave);background:var(--bg);border-radius:5px;padding:2px 6px;margin-left:6px}
-  .acoes{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
-  .btn{flex:1;min-width:130px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px;border-radius:10px;font-size:.9rem;font-weight:600;border:1px solid var(--linha);background:var(--surface);color:var(--texto)}
-  .btn.prim{background:var(--verde);border-color:var(--verde);color:#fff}
+  .detalhe{background:var(--surface);border:1px solid var(--linha);border-radius:14px;padding:20px 22px;box-shadow:var(--sombra);min-height:220px}
+  .det-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .det-head h2{margin:0;font-size:1.42rem;font-weight:700;letter-spacing:-.01em}
+  .det-head .cl{color:var(--suave);font-size:.93rem;margin-top:3px}
+  .metric-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:16px 0}
+  .metric{background:var(--panel);border:1px solid var(--linha);border-radius:11px;padding:11px 13px}
+  .metric .l{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+  .metric .v{font-size:1.12rem;font-weight:700;margin-top:3px;color:var(--texto)}
+  .metric .v.mono{font-family:ui-monospace,Menlo,monospace;font-size:.98rem}
+  .metric .v .aguardando{color:var(--muted);font-size:.82rem;font-weight:500}
+  .receita{display:flex;align-items:center;gap:9px;background:var(--verm-bg);color:var(--verm-tx);border:1px solid var(--verm-bd);border-radius:11px;padding:11px 13px;font-size:.88rem;font-weight:600;margin:14px 0}
+  .livre-box{display:flex;align-items:center;gap:9px;background:var(--acc-bg);color:var(--acc-strong);border:1px solid var(--acc);border-radius:11px;padding:11px 13px;font-size:.88rem;font-weight:600;margin:14px 0}
+  .sec{margin-top:18px}
+  .sec .rot{font-size:.73rem;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+  .sec ul{margin:0;padding-left:20px}.sec li{margin:4px 0;font-size:.95rem;color:var(--texto)}
+  .sec .txt{font-size:.95rem;color:var(--texto)}
+  .alerta{background:var(--amarelo-bg);border:1px solid var(--amarelo-bd);color:var(--amarelo-tx);border-radius:11px;padding:9px 13px;font-size:.9rem;font-weight:500}
+  .alerta ul{padding-left:18px;margin:3px 0}.alerta li{color:var(--amarelo-tx)}
+  .equiv{display:flex;flex-direction:column;gap:7px}
+  .equiv-row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--linha);border-radius:10px;padding:9px 12px;font-size:.9rem;background:var(--panel)}
+  .badge-tipo{font-size:.68rem;font-weight:700;color:var(--suave);background:var(--panel2);border-radius:6px;padding:2px 7px;margin-left:7px}
+  .acoes{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .btn{flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:11px;font-size:.92rem;font-weight:600;border:1px solid var(--linha2);background:var(--surface);color:var(--texto);text-decoration:none}
+  .btn:hover{background:var(--panel)}
+  .btn.prim{background:var(--acc-fill);border-color:var(--acc-fill);color:#fff}
+  .btn.prim:hover{filter:brightness(1.06);background:var(--acc-fill)}
   .btn:active{transform:scale(.98)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
-  .chip{background:var(--verde-bg);color:var(--verde);border:none;border-radius:20px;padding:7px 14px;font-size:.84rem;font-weight:600}
-  .vazio{text-align:center;color:var(--muted);padding:40px 16px}
-  .vazio svg{opacity:.5;margin-bottom:8px}
-  .skel{background:var(--surface);border:1px solid var(--linha);border-radius:11px;height:74px;animation:pulse 1.2s ease-in-out infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-  /* scanner */
-  .scan-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:60;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+  .chip{background:var(--acc-bg);color:var(--acc-strong);border:1px solid var(--acc);border-radius:20px;padding:8px 15px;font-size:.86rem;font-weight:600}
+  .chip:hover{filter:brightness(1.05)}
+  .grp-rot{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin:6px 0 8px}
+  .grp-livre{color:var(--acc)} .grp-rec{color:var(--verm-tx)}
+  .vazio{text-align:center;color:var(--muted);padding:48px 16px}
+  .vazio svg{opacity:.4;margin-bottom:10px}
+  .skel{background:var(--surface);border:1px solid var(--linha);border-radius:12px;height:78px;animation:pulse 1.3s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  .scan-ov{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:60;display:none;flex-direction:column;align-items:center;justify-content:center;padding:22px}
   .scan-ov.on{display:flex}
-  .scan-ov video{width:100%;max-width:460px;border-radius:14px;background:#000}
-  .scan-frame{color:#fff;text-align:center;margin-bottom:12px;font-size:.95rem}
-  .scan-close{margin-top:16px;background:#fff;color:#111;border:none;border-radius:10px;padding:12px 22px;font-weight:600}
-  .rodape{max-width:1120px;margin:0 auto;padding:0 18px 24px;color:var(--muted);font-size:.76rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-  .aviso-topo{background:var(--amarelo-bg);color:var(--amarelo-tx);font-size:.82rem;padding:8px 18px;text-align:center;border-bottom:1px solid var(--amarelo-bd)}
+  .scan-ov video{width:100%;max-width:470px;border-radius:16px;background:#000;border:2px solid var(--acc)}
+  .scan-frame{color:#fff;text-align:center;margin-bottom:14px;font-size:.98rem;font-weight:500}
+  .scan-close{margin-top:18px;background:#fff;color:#111;border:none;border-radius:11px;padding:13px 26px;font-weight:600;font-size:.95rem}
+  .rodape{max-width:1160px;margin:0 auto;padding:0 20px 28px;color:var(--muted);font-size:.77rem;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -109,17 +130,17 @@
     <div class="logo">+</div>
     <div class="marca"><b>Farmácia Brasil</b><span>Consulta de balcão</span></div>
     <button class="btn-inst" id="btnInstalar">Instalar app</button>
-    <span class="selo-rt" title="A base deve ser validada pelo farmacêutico responsável"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/></svg>validado pelo RT</span>
+    <span class="selo-rt" title="A base deve ser validada pelo farmacêutico responsável"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3l7 4v5c0 4-3 7-7 8-4-1-7-4-7-8V7z"/><path d="M9 12l2 2 4-4"/></svg>validado pelo RT</span>
   </div>
 </div>
 <div class="aviso-topo">Ferramenta de apoio — não substitui o farmacêutico responsável nem a prescrição médica.</div>
 
 <div class="barra">
   <div class="campo-wrap">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
     <input class="campo" id="busca" placeholder="Buscar medicamento, princípio ativo ou marca..." autocomplete="off">
   </div>
-  <button class="btn-scan" id="btnScan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14"/></svg>Escanear</button>
+  <button class="btn-scan" id="btnScan"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14"/></svg>Escanear</button>
 </div>
 
 <div class="tabs" id="tabs">
@@ -130,13 +151,12 @@
 </div>
 
 <div class="main" id="main"></div>
-
 <div class="rodape" id="rodape"></div>
 
 <div class="scan-ov" id="scanOv">
   <div class="scan-frame">Aponte a câmera para o código de barras da caixa</div>
   <video id="scanVideo" playsinline></video>
-  <div id="scanMsg" style="color:#fff;margin-top:10px;font-size:.9rem;min-height:20px"></div>
+  <div id="scanMsg" style="color:#fff;margin-top:12px;font-size:.9rem;min-height:20px"></div>
   <button class="scan-close" id="scanClose">Fechar</button>
 </div>
 
@@ -150,9 +170,8 @@ const money=v=> v==null?null:('R$ '+Number(v).toFixed(2).replace('.',','));
 function tarjaCls(t){if(t==='Livre')return 't-livre';if(t==='Preta/Controlada')return 't-preta';if((t||'').includes('reten'))return 't-ret';return 't-verm';}
 const receita=t=>t!=='Livre';
 
-/* skeleton enquanto carrega */
 $('main').innerHTML='<div class="split"><div><div class="conta">Carregando...</div>'+
-  Array(5).fill('<div class="skel" style="margin-bottom:8px"></div>').join('')+'</div><div class="detalhe vazio-mobile"></div></div>';
+  Array(5).fill('<div class="skel" style="margin-bottom:9px"></div>').join('')+'</div><div class="detalhe vazio-mobile"></div></div>';
 
 fetch('medicamentos.json?v='+Date.now()).then(r=>r.json()).then(d=>{
   DADOS=d.medicamentos.sort((a,b)=>a.principio.localeCompare(b.principio,'pt'));
@@ -162,7 +181,6 @@ fetch('medicamentos.json?v='+Date.now()).then(r=>r.json()).then(d=>{
   render();
 }).catch(()=>{$('main').innerHTML='<div class="vazio">Não foi possível carregar a base (medicamentos.json).</div>';});
 
-/* tabs */
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;
   aba=b.dataset.t;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));render();});
 $('busca').addEventListener('input',()=>{if(aba!=='med'&&aba!=='doenca'){aba='med';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.t==='med'));}render();});
@@ -175,20 +193,18 @@ function itemHTML(m){
     '<h4>'+m.principio+'</h4><div class="cl">'+m.classe+'</div></button>';
 }
 
-function equivalentes(m){
-  return DADOS.filter(x=>x.grupo===m.grupo && x.id!==m.id);
-}
+function equivalentes(m){ return DADOS.filter(x=>x.grupo===m.grupo && x.id!==m.id); }
 
 function detalheHTML(m){
-  if(!m) return '<div class="detalhe vazio-mobile"><div class="vazio"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8V6a5 5 0 0110 0v2"/></svg><div>Selecione um medicamento para ver a ficha.</div></div></div>';
+  if(!m) return '<div class="detalhe vazio-mobile"><div class="vazio"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8V6a5 5 0 0110 0v2"/></svg><div>Selecione um medicamento para ver a ficha.</div></div></div>';
   let h='<div class="detalhe"><div class="det-head"><div><h2>'+m.principio+'</h2><div class="cl">'+m.classe+'</div></div><span class="tarja '+tarjaCls(m.tarja)+'">'+m.tarja+'</span></div>';
   h+= receita(m.tarja)
-    ? '<div class="receita"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Exige receita'+((m.tarja||'').includes('reten')?' — com retenção':'')+((m.tarja||'').includes('Preta')?' — notificação de receita (controlado)':'')+'. Não dispensar sem apresentação.</div>'
-    : '<div class="livre-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Venda livre (MIP). Oriente sobre o uso correto.</div>';
-  h+='<div class="metric-row"><div class="metric"><div class="l">Preço ref. (PMC)</div><div class="v">'+(m.preco!=null?money(m.preco):'<span style="color:var(--muted);font-size:.85rem;font-weight:500">aguardando ABCFarma</span>')+'</div></div>'+
-     '<div class="metric"><div class="l">Código (EAN)</div><div class="v mono">'+(m.ean||'<span style="color:var(--muted);font-size:.8rem;font-family:inherit;font-weight:500">não cadastrado</span>')+'</div></div></div>';
+    ? '<div class="receita"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Exige receita'+((m.tarja||'').includes('reten')?' — com retenção':'')+((m.tarja||'').includes('Preta')?' — notificação de receita (controlado)':'')+'. Não dispensar sem apresentação.</div>'
+    : '<div class="livre-box"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5L20 7"/></svg>Venda livre (MIP). Oriente sobre o uso correto.</div>';
+  h+='<div class="metric-row"><div class="metric"><div class="l">Preço ref. (PMC)</div><div class="v">'+(m.preco!=null?money(m.preco):'<span class="aguardando">aguardando ABCFarma</span>')+'</div></div>'+
+     '<div class="metric"><div class="l">Código (EAN)</div><div class="v mono">'+(m.ean||'<span class="aguardando" style="font-family:inherit">não cadastrado</span>')+'</div></div></div>';
   h+='<div class="sec"><div class="rot">Indicações</div><ul>'+(m.indicacoes||[]).map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="sec"><div class="rot">Posologia (referência)</div><div style="font-size:.92rem">'+(m.posologia||'—')+'</div></div>';
+  h+='<div class="sec"><div class="rot">Posologia (referência)</div><div class="txt">'+(m.posologia||'—')+'</div></div>';
   h+='<div class="sec"><div class="rot">Contraindicações</div><ul>'+(m.contraindicacoes||[]).map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
   if(m.alertas&&m.alertas.length) h+='<div class="sec"><div class="rot">Alertas</div><div class="alerta"><ul>'+m.alertas.map(x=>'<li>'+x+'</li>').join('')+'</ul></div></div>';
   const eq=equivalentes(m);
@@ -196,7 +212,7 @@ function detalheHTML(m){
   if(eq.length){
     h+='<div class="equiv">'+eq.map(x=>'<div class="equiv-row"><span>'+x.principio+'<span class="badge-tipo">'+(x.tipo||'')+'</span></span>'+precoHTML(x)+'</div>').join('')+'</div>';
   } else {
-    h+='<div style="font-size:.88rem;color:var(--suave)">'+(m.generico?'Genérico disponível ('+(m.marcas||[]).filter(x=>x!=='Genérico').join(', ')+' e genérico). ':'')+'Equivalentes e preços completos após importar ABCFarma.</div>';
+    h+='<div class="txt" style="color:var(--suave)">'+(m.generico?'Genérico disponível ('+(m.marcas||[]).filter(x=>x!=='Genérico').join(', ')+' e genérico). ':'')+'Equivalentes e preços completos após importar a base ANVISA/ABCFarma.</div>';
   }
   h+='</div>';
   h+='<div class="acoes"><a class="btn prim" href="https://consultas.anvisa.gov.br/#/bulario/q/?nomeProduto='+encodeURIComponent(m.principio)+'" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>Bula (ANVISA)</a>'+
@@ -209,28 +225,26 @@ function render(){
   if(aba==='seg') return renderSeg();
   if(aba==='comparar') return renderCmp();
   if(aba==='doenca') return renderDoenca(q);
-  // medicamento
   const nq=norm(q);
   const res=!nq?DADOS:DADOS.filter(m=>norm([m.principio,m.classe,(m.marcas||[]).join(' '),m.ean||''].join(' ')).includes(nq));
   const m=res.find(x=>x.id===selId)||null;
   $('main').innerHTML='<div class="split"><div><div class="conta">'+res.length+' resultado(s)</div><div class="lista">'+
     (res.length?res.map(itemHTML).join(''):'<div class="vazio">Nada encontrado.</div>')+'</div></div>'+detalheHTML(m)+'</div>';
 }
-function sel(id){selId=id;render();if(window.innerWidth<=820)document.querySelector('.detalhe').scrollIntoView({behavior:'smooth'});}
+function sel(id){selId=id;render();if(window.innerWidth<=860)document.querySelector('.detalhe').scrollIntoView({behavior:'smooth'});}
 
 function renderDoenca(q){
   const nq=norm(q);
   const conta={};DADOS.forEach(m=>(m.enfermidades||[]).forEach(e=>conta[e]=(conta[e]||0)+1));
   const top=Object.keys(conta).sort((a,b)=>conta[b]-conta[a]).slice(0,12);
-  let h='<input style="display:none">';
-  h='<div class="chips">'+top.map(e=>'<button class="chip" onclick="setDoenca(\''+e.replace(/'/g,'')+'\')">'+e+'</button>').join('')+'</div>';
+  let h='<div class="chips">'+top.map(e=>'<button class="chip" onclick="setDoenca(\''+e.replace(/'/g,'')+'\')">'+e+'</button>').join('')+'</div>';
   if(!nq){$('main').innerHTML=h+'<div class="vazio">Digite uma doença/sintoma acima ou toque em uma sugestão.</div>';return;}
   const res=DADOS.filter(m=>norm((m.enfermidades||[]).join(' ')+' '+(m.indicacoes||[]).join(' ')).includes(nq));
   if(!res.length){$('main').innerHTML=h+'<div class="vazio">Nada para "'+q+'". Encaminhe ao farmacêutico.</div>';return;}
   const livres=res.filter(m=>!receita(m.tarja)), rec=res.filter(m=>receita(m.tarja));
-  h+='<div class="alerta" style="margin-bottom:12px">Sugestões de apoio. A escolha depende do caso e, quando exigido, de prescrição. Sinais de alerta (febre alta, dor intensa, sangramento, falta de ar, sintomas persistentes) → encaminhar.</div>';
-  if(livres.length) h+='<div class="rot" style="margin:8px 0 6px;color:var(--verde);font-weight:700">Venda livre (MIP)</div><div class="grid">'+livres.map(itemHTML).join('')+'</div>';
-  if(rec.length) h+='<div class="rot" style="margin:16px 0 6px;color:var(--vermelho-tx);font-weight:700">Somente com receita</div><div class="grid">'+rec.map(itemHTML).join('')+'</div>';
+  h+='<div class="alerta" style="margin-bottom:14px">Sugestões de apoio. A escolha depende do caso e, quando exigido, de prescrição. Sinais de alerta (febre alta, dor intensa, sangramento, falta de ar, sintomas persistentes) → encaminhar.</div>';
+  if(livres.length) h+='<div class="grp-rot grp-livre">Venda livre (MIP)</div><div class="grid">'+livres.map(itemHTML).join('')+'</div>';
+  if(rec.length) h+='<div class="grp-rot grp-rec" style="margin-top:18px">Somente com receita</div><div class="grid">'+rec.map(itemHTML).join('')+'</div>';
   $('main').innerHTML=h;
 }
 function setDoenca(e){$('busca').value=e;aba='doenca';document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.t==='doenca'));render();}
@@ -240,9 +254,9 @@ function rmCmp(id){cmp.delete(id);render();}
 function renderCmp(){
   if(cmp.size<1){$('main').innerHTML='<div class="vazio"><div>Nenhum medicamento selecionado.</div><div style="font-size:.85rem;margin-top:6px">Abra uma ficha e toque em “Comparar”.</div></div>';return;}
   const ms=[...cmp].map(id=>DADOS.find(x=>x.id===id));
-  const linha=(rot,fn)=>'<tr><td style="background:var(--bg);font-weight:700;font-size:.82rem;padding:9px;border:1px solid var(--linha)">'+rot+'</td>'+ms.map(m=>'<td style="padding:9px;border:1px solid var(--linha);font-size:.86rem;vertical-align:top">'+fn(m)+'</td>').join('')+'</tr>';
-  let h='<div style="overflow:auto"><table style="border-collapse:collapse;width:100%;min-width:520px;background:var(--surface)"><tr><td style="border:1px solid var(--linha);padding:9px"></td>'+
-    ms.map(m=>'<th style="border:1px solid var(--linha);padding:9px;text-align:left;background:var(--verde-bg)"><div style="font-size:.95rem">'+m.principio+'</div><button onclick="rmCmp('+m.id+')" style="font-size:.72rem;color:var(--suave);background:none;border:none;padding:0;margin-top:2px">remover</button></th>').join('')+'</tr>';
+  const linha=(rot,fn)=>'<tr><td style="background:var(--panel);font-weight:700;font-size:.82rem;padding:10px;border:1px solid var(--linha)">'+rot+'</td>'+ms.map(m=>'<td style="padding:10px;border:1px solid var(--linha);font-size:.87rem;vertical-align:top">'+fn(m)+'</td>').join('')+'</tr>';
+  let h='<div style="overflow:auto"><table style="border-collapse:collapse;width:100%;min-width:540px;background:var(--surface);border-radius:12px;overflow:hidden"><tr><td style="border:1px solid var(--linha);padding:10px"></td>'+
+    ms.map(m=>'<th style="border:1px solid var(--linha);padding:10px;text-align:left;background:var(--acc-bg)"><div style="font-size:.96rem;color:var(--texto)">'+m.principio+'</div><button onclick="rmCmp('+m.id+')" style="font-size:.72rem;color:var(--suave);background:none;border:none;padding:0;margin-top:3px;cursor:pointer">remover</button></th>').join('')+'</tr>';
   h+=linha('Tarja',m=>'<span class="tarja '+tarjaCls(m.tarja)+'">'+m.tarja+'</span>');
   h+=linha('Classe',m=>m.classe);
   h+=linha('Preço',m=>m.preco!=null?money(m.preco):'—');
@@ -255,18 +269,17 @@ function renderCmp(){
 }
 
 function renderSeg(){
-  $('main').innerHTML='<div class="detalhe" style="max-width:720px"><h2 style="margin-top:0">Uso seguro no balcão</h2>'+
+  $('main').innerHTML='<div class="detalhe" style="max-width:760px"><h2 style="margin:0 0 4px;font-size:1.35rem">Uso seguro no balcão</h2>'+
    '<div class="sec"><div class="rot">Legenda de tarja</div><ul>'+
    '<li><b>Livre</b> — isento de prescrição (MIP), venda livre.</li>'+
    '<li><b>Vermelha</b> — venda sob prescrição médica.</li>'+
    '<li><b>Vermelha (retenção)</b> — antibióticos, com retenção da receita (RDC 20/2011).</li>'+
    '<li><b>Preta / controlada</b> — notificação de receita (Portaria 344/98).</li></ul></div>'+
-   '<div class="alerta" style="margin-top:12px">Base <b>curada inicial</b> — deve ser <b>validada pelo farmacêutico responsável (RT)</b> antes do uso real. Bula completa e oficial: Bulário Eletrônico da ANVISA. Fontes previstas: ANVISA (Dados Abertos) + ABCFarma.</div>'+
-   '<div class="sec"><div class="rot">Sobre este app</div><div style="font-size:.9rem" id="segMeta"></div></div></div>';
+   '<div class="alerta" style="margin-top:14px">Base <b>curada inicial</b> — deve ser <b>validada pelo farmacêutico responsável (RT)</b> antes do uso real. Bula completa e oficial: Bulário Eletrônico da ANVISA. Fontes previstas: ANVISA (Dados Abertos) + ABCFarma.</div>'+
+   '<div class="sec"><div class="rot">Sobre este app</div><div class="txt" id="segMeta"></div></div></div>';
   $('segMeta').textContent='Versão '+(META.versao||'?')+' · '+DADOS.length+' medicamentos · atualizado em '+(META.atualizado_em||'?')+'. Funciona offline após a primeira abertura.';
 }
 
-/* ===== Leitor de código de barras (ZXing) ===== */
 let reader=null;
 $('btnScan').addEventListener('click',abrirScan);
 $('scanClose').addEventListener('click',fecharScan);
@@ -274,9 +287,7 @@ function abrirScan(){
   if(typeof ZXing==='undefined'){alert('Leitor indisponível (sem conexão na primeira vez).');return;}
   $('scanOv').classList.add('on');$('scanMsg').textContent='';
   reader=new ZXing.BrowserMultiFormatReader();
-  reader.decodeFromVideoDevice(null,'scanVideo',(res,err)=>{
-    if(res){const code=res.getText();acharPorEAN(code);}
-  }).catch(e=>{$('scanMsg').textContent='Não foi possível acessar a câmera.';});
+  reader.decodeFromVideoDevice(null,'scanVideo',(res)=>{ if(res)acharPorEAN(res.getText()); }).catch(()=>{$('scanMsg').textContent='Não foi possível acessar a câmera.';});
 }
 function fecharScan(){if(reader){try{reader.reset();}catch(e){}}$('scanOv').classList.remove('on');}
 function acharPorEAN(code){
@@ -285,13 +296,11 @@ function acharPorEAN(code){
   else{$('scanMsg').textContent='EAN '+code+' não cadastrado (aguardando base ABCFarma).';}
 }
 
-/* ===== PWA ===== */
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
 let deferido=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferido=e;$('btnInstalar').style.display='inline-block';});
 $('btnInstalar').addEventListener('click',async()=>{if(deferido){deferido.prompt();await deferido.userChoice;deferido=null;$('btnInstalar').style.display='none';}});
 
-/* live-reload local (SSE, ignorado no Pages) */
 try{const es=new EventSource('/events');es.onmessage=()=>location.reload();}catch(e){}
 </script>
 </body>
