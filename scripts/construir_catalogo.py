@@ -13,6 +13,7 @@ executa no runner do GitHub. Fonte oficial:
 https://dados.anvisa.gov.br/dados/DADOS_ABERTOS_MEDICAMENTOS.csv
 """
 import csv
+import html
 import io
 import json
 import os
@@ -83,7 +84,7 @@ def main():
     c_emp = achar_col(cab, "NOME_EMPRESA", "EMPRESA", "RAZAO_SOCIAL", "EMPRESA_DETENTORA")
     c_classe = achar_col(cab, "CLASSE_TERAPEUTICA", "CATEGORIA_REGULATORIA", "CLASSE")
     c_sit = achar_col(cab, "SITUACAO_REGISTRO", "SITUACAO")
-    c_tipo = achar_col(cab, "TIPO_PRODUTO", "TIPO")
+    c_tipo = achar_col(cab, "CATEGORIA_REGULATORIA", "TIPO_PRODUTO", "TIPO")
 
     print("Mapeamento:", {"produto": c_prod, "principio": c_princ, "empresa": c_emp,
                           "classe": c_classe, "situacao": c_sit, "tipo": c_tipo})
@@ -93,13 +94,13 @@ def main():
     total = 0
     for row in rd:
         total += 1
-        sit = (row.get(c_sit) or "").upper() if c_sit else ""
-        if c_sit and "VALID" not in norm(sit).upper() and "VÁLID" not in sit:
-            # mantém só registros válidos quando a coluna existe
-            if "VALID" not in norm(sit):
+        if c_sit:
+            sit = norm(row.get(c_sit) or "")
+            # SITUACAO_REGISTRO = "Ativo"/"Inativo"; mantém só os ativos
+            if sit and sit != "ativo" and "valid" not in sit:
                 continue
-        princ = (row.get(c_princ) or "").strip() if c_princ else ""
-        prod = (row.get(c_prod) or "").strip() if c_prod else ""
+        princ = re.sub(r"^[\s\-/.,;+]+", "", html.unescape((row.get(c_princ) or "")).strip()) if c_princ else ""
+        prod = re.sub(r"^[\s\-/.,;+]+", "", html.unescape((row.get(c_prod) or "")).strip()) if c_prod else ""
         nome = princ or prod
         if not nome:
             continue
@@ -110,9 +111,9 @@ def main():
         itens.append({
             "principio": (princ or prod).title(),
             "produto": prod.title(),
-            "classe": (row.get(c_classe) or "").strip().title() if c_classe else "",
-            "empresa": (row.get(c_emp) or "").strip().title() if c_emp else "",
-            "tipo": (row.get(c_tipo) or "").strip().lower() if c_tipo else "",
+            "classe": html.unescape((row.get(c_classe) or "")).strip().title() if c_classe else "",
+            "empresa": html.unescape((row.get(c_emp) or "")).strip().title() if c_emp else "",
+            "tipo": html.unescape((row.get(c_tipo) or "")).strip().lower() if c_tipo else "",
             "tarja": "A confirmar",
             "grupo": norm(princ or prod),
             "ean": None, "preco": None,
