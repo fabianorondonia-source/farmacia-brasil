@@ -17,6 +17,7 @@ import io
 import json
 import os
 import re
+import ssl
 import sys
 import unicodedata
 import urllib.request
@@ -47,9 +48,19 @@ def achar_col(cabecalho, *chaves):
 
 def baixar_csv(url):
     print(f"Baixando {url} ...")
-    req = urllib.request.Request(url, headers={"User-Agent": "farmacia-brasil-bot/1.0"})
-    with urllib.request.urlopen(req, timeout=180) as r:
-        raw = r.read()
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (farmacia-brasil-bot)"})
+    try:
+        with urllib.request.urlopen(req, timeout=300) as r:
+            raw = r.read()
+    except (ssl.SSLError, urllib.error.URLError) as e:
+        # Servidores gov.br frequentemente não enviam a cadeia intermediária do
+        # certificado; para uma base PÚBLICA, seguimos sem verificar o certificado.
+        print(f"  Aviso SSL ({e}); repetindo sem verificação de certificado.")
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        with urllib.request.urlopen(req, timeout=300, context=ctx) as r:
+            raw = r.read()
     print(f"  {len(raw)/1_000_000:.1f} MB baixados")
     for enc in ("utf-8-sig", "latin-1"):
         try:
