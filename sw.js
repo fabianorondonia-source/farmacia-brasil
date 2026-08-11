@@ -1,9 +1,10 @@
 /* Service Worker — Farmácia Brasil (PWA offline) */
-const CACHE = 'farmacia-v2';
+const CACHE = 'farmacia-v3';
 const ASSETS = [
   './',
   'index.html',
   'medicamentos.json',
+  'catalogo.json',
   'manifest.webmanifest',
   'icon.svg',
   'icon-192.png',
@@ -31,7 +32,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
 
   // Dados: rede primeiro (para pegar atualizações), cai para cache offline
-  if (url.pathname.endsWith('medicamentos.json')) {
+  if (url.pathname.endsWith('medicamentos.json') || url.pathname.endsWith('catalogo.json')) {
     e.respondWith(
       fetch(req).then(r => {
         const cp = r.clone();

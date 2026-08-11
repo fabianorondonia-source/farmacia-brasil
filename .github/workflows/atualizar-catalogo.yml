@@ -1,0 +1,37 @@
+name: Atualizar catálogo (ANVISA)
+
+on:
+  workflow_dispatch:        # botão "Run workflow" (disparo manual)
+  schedule:
+    - cron: "0 6 1 * *"     # dia 1 de cada mês, 06:00 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Construir catálogo
+        run: DATA_BUILD=$(date -u +%F) python scripts/construir_catalogo.py
+
+      - name: Commitar se mudou
+        run: |
+          git config user.name "catalogo-bot"
+          git config user.email "actions@github.com"
+          if [ -n "$(git status --porcelain catalogo.json)" ]; then
+            git add catalogo.json
+            git commit -m "Atualiza catálogo ANVISA ($(date -u +%F))"
+            git push
+            echo "Catálogo atualizado e publicado."
+          else
+            echo "Sem mudanças no catálogo."
+          fi

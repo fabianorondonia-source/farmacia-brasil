@@ -70,11 +70,13 @@
   .t-verm{background:#f7dedd;color:#a52c2c}
   .t-ret{background:#f6e0cd;color:#8a4212}
   .t-preta{background:#dde4e0;color:#2f3b35}
+  .t-conf{background:#efe3c6;color:#7a5c00}
   @media (prefers-color-scheme: dark){
     .t-livre{background:#17402f;color:#74e6b0}
     .t-verm{background:#3a2321;color:#f3a3a3}
     .t-ret{background:#3a2917;color:#eaad76}
     .t-preta{background:#2a332e;color:#c6d0ca}
+    .t-conf{background:#332c17;color:#e8ca7f}
   }
   .preco{font-size:.9rem;font-weight:700;color:var(--texto)}
   .preco.eco{color:var(--acc)}
@@ -91,6 +93,7 @@
   .metric .v .aguardando{color:var(--muted);font-size:.82rem;font-weight:500}
   .receita{display:flex;align-items:center;gap:9px;background:var(--verm-bg);color:var(--verm-tx);border:1px solid var(--verm-bd);border-radius:11px;padding:11px 13px;font-size:.88rem;font-weight:600;margin:14px 0}
   .livre-box{display:flex;align-items:center;gap:9px;background:var(--acc-bg);color:var(--acc-strong);border:1px solid var(--acc);border-radius:11px;padding:11px 13px;font-size:.88rem;font-weight:600;margin:14px 0}
+  .conf-box{display:flex;align-items:center;gap:9px;background:var(--amarelo-bg);color:var(--amarelo-tx);border:1px solid var(--amarelo-bd);border-radius:11px;padding:11px 13px;font-size:.88rem;font-weight:600;margin:14px 0}
   .sec{margin-top:18px}
   .sec .rot{font-size:.73rem;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:6px}
   .sec ul{margin:0;padding-left:20px}.sec li{margin:4px 0;font-size:.95rem;color:var(--texto)}
@@ -167,19 +170,20 @@ const cmp=new Set();
 const $=id=>document.getElementById(id);
 const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 const money=v=> v==null?null:('R$ '+Number(v).toFixed(2).replace('.',','));
-function tarjaCls(t){if(t==='Livre')return 't-livre';if(t==='Preta/Controlada')return 't-preta';if((t||'').includes('reten'))return 't-ret';return 't-verm';}
-const receita=t=>t!=='Livre';
+function tarjaCls(t){if(t==='Livre')return 't-livre';if(t==='A confirmar')return 't-conf';if(t==='Preta/Controlada')return 't-preta';if((t||'').includes('reten'))return 't-ret';return 't-verm';}
+const receita=t=>t!=='Livre'&&t!=='A confirmar';
 
 $('main').innerHTML='<div class="split"><div><div class="conta">Carregando...</div>'+
   Array(5).fill('<div class="skel" style="margin-bottom:9px"></div>').join('')+'</div><div class="detalhe vazio-mobile"></div></div>';
 
-fetch('medicamentos.json?v='+Date.now()).then(r=>r.json()).then(d=>{
+function carregar(url){return fetch(url+'?v='+Date.now()).then(r=>{if(!r.ok)throw 0;return r.json();});}
+carregar('catalogo.json').catch(()=>carregar('medicamentos.json')).then(d=>{
   DADOS=d.medicamentos.sort((a,b)=>a.principio.localeCompare(b.principio,'pt'));
   META=d.meta||{};
   $('rodape').innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 4-3 7-7 8-4-1-7-4-7-8V7z"/></svg>'+
-    'Base v'+(META.versao||'?')+' · '+DADOS.length+' itens · a validar pelo farmacêutico responsável · fonte prevista: ANVISA + ABCFarma';
+    'Base v'+(META.versao||'?')+' · '+DADOS.length.toLocaleString('pt-BR')+' itens · a validar pelo farmacêutico responsável · fonte: ANVISA + curadoria';
   render();
-}).catch(()=>{$('main').innerHTML='<div class="vazio">Não foi possível carregar a base (medicamentos.json).</div>';});
+}).catch(()=>{$('main').innerHTML='<div class="vazio">Não foi possível carregar a base.</div>';});
 
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;
   aba=b.dataset.t;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));render();});
@@ -198,15 +202,25 @@ function equivalentes(m){ return DADOS.filter(x=>x.grupo===m.grupo && x.id!==m.i
 function detalheHTML(m){
   if(!m) return '<div class="detalhe vazio-mobile"><div class="vazio"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8V6a5 5 0 0110 0v2"/></svg><div>Selecione um medicamento para ver a ficha.</div></div></div>';
   let h='<div class="detalhe"><div class="det-head"><div><h2>'+m.principio+'</h2><div class="cl">'+m.classe+'</div></div><span class="tarja '+tarjaCls(m.tarja)+'">'+m.tarja+'</span></div>';
-  h+= receita(m.tarja)
-    ? '<div class="receita"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Exige receita'+((m.tarja||'').includes('reten')?' — com retenção':'')+((m.tarja||'').includes('Preta')?' — notificação de receita (controlado)':'')+'. Não dispensar sem apresentação.</div>'
-    : '<div class="livre-box"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5L20 7"/></svg>Venda livre (MIP). Oriente sobre o uso correto.</div>';
-  h+='<div class="metric-row"><div class="metric"><div class="l">Preço ref. (PMC)</div><div class="v">'+(m.preco!=null?money(m.preco):'<span class="aguardando">aguardando ABCFarma</span>')+'</div></div>'+
-     '<div class="metric"><div class="l">Código (EAN)</div><div class="v mono">'+(m.ean||'<span class="aguardando" style="font-family:inherit">não cadastrado</span>')+'</div></div></div>';
-  h+='<div class="sec"><div class="rot">Indicações</div><ul>'+(m.indicacoes||[]).map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  h+='<div class="sec"><div class="rot">Posologia (referência)</div><div class="txt">'+(m.posologia||'—')+'</div></div>';
-  h+='<div class="sec"><div class="rot">Contraindicações</div><ul>'+(m.contraindicacoes||[]).map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  if(m.alertas&&m.alertas.length) h+='<div class="sec"><div class="rot">Alertas</div><div class="alerta"><ul>'+m.alertas.map(x=>'<li>'+x+'</li>').join('')+'</ul></div></div>';
+  if(m.tarja==='A confirmar'){
+    h+='<div class="conf-box"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Tarja a confirmar — verifique a exigência de receita na bula (ANVISA) antes de dispensar.</div>';
+  } else if(receita(m.tarja)){
+    h+='<div class="receita"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Exige receita'+((m.tarja||'').includes('reten')?' — com retenção':'')+((m.tarja||'').includes('Preta')?' — notificação de receita (controlado)':'')+'. Não dispensar sem apresentação.</div>';
+  } else {
+    h+='<div class="livre-box"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5L20 7"/></svg>Venda livre (MIP). Oriente sobre o uso correto.</div>';
+  }
+  if(m.empresa) h+='<div class="cl" style="margin:-4px 0 4px;color:var(--muted);font-size:.83rem">Fabricante: '+m.empresa+'</div>';
+  h+='<div class="metric-row"><div class="metric"><div class="l">Preço ref. (PMC)</div><div class="v">'+(m.preco!=null?money(m.preco):'<span class="aguardando">—</span>')+'</div></div>'+
+     '<div class="metric"><div class="l">Código (EAN)</div><div class="v mono">'+(m.ean||'<span class="aguardando" style="font-family:inherit">—</span>')+'</div></div></div>';
+  const temClin=(m.indicacoes&&m.indicacoes.length)||(m.contraindicacoes&&m.contraindicacoes.length)||m.posologia;
+  if(temClin){
+    if(m.indicacoes&&m.indicacoes.length) h+='<div class="sec"><div class="rot">Indicações</div><ul>'+m.indicacoes.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+    if(m.posologia) h+='<div class="sec"><div class="rot">Posologia (referência)</div><div class="txt">'+m.posologia+'</div></div>';
+    if(m.contraindicacoes&&m.contraindicacoes.length) h+='<div class="sec"><div class="rot">Contraindicações</div><ul>'+m.contraindicacoes.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+    if(m.alertas&&m.alertas.length) h+='<div class="sec"><div class="rot">Alertas</div><div class="alerta"><ul>'+m.alertas.map(x=>'<li>'+x+'</li>').join('')+'</ul></div></div>';
+  } else {
+    h+='<div class="sec"><div class="alerta">Indicações, posologia e contraindicações completas na bula oficial da ANVISA — use o botão abaixo.</div></div>';
+  }
   const eq=equivalentes(m);
   h+='<div class="sec"><div class="rot"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h11M7 7l3-3M7 7l3 3M17 17H6M17 17l-3-3M17 17l-3 3"/></svg>Genéricos e similares</div>';
   if(eq.length){
@@ -226,10 +240,20 @@ function render(){
   if(aba==='comparar') return renderCmp();
   if(aba==='doenca') return renderDoenca(q);
   const nq=norm(q);
-  const res=!nq?DADOS:DADOS.filter(m=>norm([m.principio,m.classe,(m.marcas||[]).join(' '),m.ean||''].join(' ')).includes(nq));
-  const m=res.find(x=>x.id===selId)||null;
-  $('main').innerHTML='<div class="split"><div><div class="conta">'+res.length+' resultado(s)</div><div class="lista">'+
-    (res.length?res.map(itemHTML).join(''):'<div class="vazio">Nada encontrado.</div>')+'</div></div>'+detalheHTML(m)+'</div>';
+  const grande=DADOS.length>800;
+  let res=!nq?DADOS:DADOS.filter(m=>norm([m.principio,m.produto||'',m.classe,(m.marcas||[]).join(' '),m.empresa||'',m.ean||''].join(' ')).includes(nq));
+  const m=DADOS.find(x=>x.id===selId)||null;
+  let listaHTML,conta='',aviso='';
+  if(!nq&&grande){
+    res=[];
+    listaHTML='<div class="vazio" style="padding:30px 14px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><div>Catálogo com '+DADOS.length.toLocaleString('pt-BR')+' itens.</div><div style="font-size:.85rem;margin-top:4px">Digite para buscar ou use o leitor de código de barras.</div></div>';
+  } else {
+    conta=res.length+' resultado(s)';
+    const capped=res.slice(0,200);
+    if(res.length>200) aviso='<div class="conta">mostrando 200 de '+res.length.toLocaleString('pt-BR')+' — refine a busca</div>';
+    listaHTML=capped.length?capped.map(itemHTML).join(''):'<div class="vazio">Nada encontrado.</div>';
+  }
+  $('main').innerHTML='<div class="split"><div><div class="conta">'+conta+'</div>'+aviso+'<div class="lista">'+listaHTML+'</div></div>'+detalheHTML(m)+'</div>';
 }
 function sel(id){selId=id;render();if(window.innerWidth<=860)document.querySelector('.detalhe').scrollIntoView({behavior:'smooth'});}
 
